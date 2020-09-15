@@ -9,16 +9,16 @@ myPen = turtle.Turtle()
 myPen.speed(0)
 myPen.color("#000000")
 
-minX = 16
-minY = 16
+setX = 16
+setY = 16
 
 grid = [[]]
-for columns in range(0, minX):
+for columns in range(0, setX):
     grid[0].append(0)
 
-for rows in range(0, minY):
+for rows in range(0, setY):
     row = []
-    for columns in range(0, minX):
+    for columns in range(0, setX):
         row.append(0)
     grid.append(row)
 
@@ -29,36 +29,36 @@ entrance_dir = 0
 
 def setEntrance(entrance_dir = entrance_dir, grid = grid):
     if entrance_dir == 0:
-        entrance_side0 = [0, (minX // 2) - 1]
-        entrance_side1 = [0, (minX // 2)]
-        entrance_side2 = [0, (minX // 2) + 1]
-        grid[0][minX // 2] = 1
-        grid[0][(minX // 2) - 1] = 1
-        grid[0][(minX // 2) + 1] = 1
+        entrance_side0 = [0, (setX // 2) - 1]
+        entrance_side1 = [0, (setX // 2)]
+        entrance_side2 = [0, (setX // 2) + 1]
+        grid[0][setX // 2] = 1
+        grid[0][(setX // 2) - 1] = 1
+        grid[0][(setX // 2) + 1] = 1
         return [entrance_side0, entrance_side1, entrance_side2]
     elif entrance_dir == 1:
-        entrance_side0 = [(minY // 2) - 1, -1]
-        entrance_side1 = [(minY // 2), -1]
-        entrance_side2 = [(minY // 2) + 1, -1]
-        grid[minY // 2][-1] = 1
-        grid[(minY // 2) - 1][-1] = 1
-        grid[(minY // 2) + 1][-1] = 1
+        entrance_side0 = [(setY // 2) - 1, -1]
+        entrance_side1 = [(setY // 2), -1]
+        entrance_side2 = [(setY // 2) + 1, -1]
+        grid[setY // 2][-1] = 1
+        grid[(setY // 2) - 1][-1] = 1
+        grid[(setY // 2) + 1][-1] = 1
         return [entrance_side0, entrance_side1, entrance_side2]
     elif entrance_dir == 2:
-        entrance_side0 = [-1, (minX // 2) - 1]
-        entrance_side1 = [-1, (minX // 2)]
-        entrance_side2 = [-1, (minX // 2) + 1]
-        grid[-1][minX // 2] = 1
-        grid[-1][(minX // 2) - 1] = 1
-        grid[-1][(minX // 2) + 1] = 1
+        entrance_side0 = [-1, (setX // 2) - 1]
+        entrance_side1 = [-1, (setX // 2)]
+        entrance_side2 = [-1, (setX // 2) + 1]
+        grid[-1][setX // 2] = 1
+        grid[-1][(setX // 2) - 1] = 1
+        grid[-1][(setX // 2) + 1] = 1
         return [entrance_side0, entrance_side1, entrance_side2]
     else:
-        entrance_side0 = [(minY // 2) - 1, 0]
-        entrance_side1 = [(minY // 2), 0]
-        entrance_side2 = [(minY // 2) + 1, 0]
-        grid[minY // 2][0] = 1
-        grid[(minY // 2) - 1][0] = 1
-        grid[(minY // 2) + 1][0] = 1
+        entrance_side0 = [(setY // 2) - 1, 0]
+        entrance_side1 = [(setY // 2), 0]
+        entrance_side2 = [(setY // 2) + 1, 0]
+        grid[setY // 2][0] = 1
+        grid[(setY // 2) - 1][0] = 1
+        grid[(setY // 2) + 1][0] = 1
         return [entrance_side0, entrance_side1, entrance_side2]
 
 
