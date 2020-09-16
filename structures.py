@@ -1,6 +1,6 @@
-from grid import Grid
 import random
 x = 99
+
 
 class Structure(object):
 
@@ -15,28 +15,29 @@ class Structure(object):
         used to lend weight to certain structures. Perhaps a grid sector needs at least one room of a
         certain volume so it's not just constantly building halls?
 
-        returns a new set of anchors for the grid to operate on.
+        returns a new set of anchor for the grid to operate on.
 
         structure subclasses
     """
 
-    def __init__(self, name=None, compass_axis=None, layout=None, area=None, volume=None):
+    def __init__(self, name=None, compass_axis=None, layout=None, area=None, volume=None, anchor=None):
         self.name = name
         self.axis = compass_axis
         self.layout = layout
         self.area = area
         self.volume = volume
+        self.anchor = anchor
 
     def check_attributes(self):
-        print([self.volume, self.area])
-        return [self.volume, self.area]
+        print(self.volume, self.area, self.anchor)
+        return [self.volume, self.area, self.anchor]
 
     def blueprint(self):
         print(self.layout)
         return self.layout
 
     def __str__(self):
-        return "{0.layout}".format(self)
+        return "{0.layout}, {0.anchor}".format(self)
 
 
 class ShortHallway(Structure):
@@ -53,7 +54,7 @@ class ShortHallway(Structure):
             [1, 0, 1],
             [1, 0, 1],
             [1, 0, 1],
-        ], volume=15, area=15)
+        ], volume=15, area=15, anchor=[0, 0])
 
 
 class TeeHall(Structure):
@@ -65,4 +66,4 @@ class TeeHall(Structure):
             [1, 1, 0, 1, 1],
             [0, 0, 0, 0, 0],
             [1, 1, 1, 1, 1]
-        ], volume=9, area=24)
+        ], volume=9, area=24, anchor=[0, 1])

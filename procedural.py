@@ -66,11 +66,11 @@ entrance_bounds = setEntrance()
 print(entrance_bounds)
 
 
-# def addHallway(entrance_dir = entrance_dir, anchors = entrance_bounds):
-#     anchor1y = anchors[0][0]
-#     anchor1x = anchors[0][1]
-#     anchor2y = anchors[2][0]
-#     anchor2x = anchors[2][1]
+# def addHallway(entrance_dir = entrance_dir, anchor = entrance_bounds):
+#     anchor1y = anchor[0][0]
+#     anchor1x = anchor[0][1]
+#     anchor2y = anchor[2][0]
+#     anchor2x = anchor[2][1]
 #     print(anchor1x, anchor1y)
 #     print(anchor2x, anchor2y)
 #     hallway_length = 7
