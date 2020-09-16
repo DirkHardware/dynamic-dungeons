@@ -70,11 +70,12 @@ class Frog(object):
 """
 
 
-
 if __name__ == '__main__':
     grid = Grid(16, 16)
-    structure = structures.ShortHallway("none", grid.squares, grid.anchors, 0)
-    print(structure)
+    # print(grid.anchors)
+    hallway = structures.ShortHallway("SH-1", grid.anchors, grid.squares)
+    # structure = structures.ShortHallway(grid.squares, grid.anchors, 0)
+    print(hallway)
 
     # potential_classes = [Duck(), Dog(), Frog()]
     # pet = potential_classes[random.randint(0, 2)]
