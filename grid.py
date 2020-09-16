@@ -39,7 +39,7 @@ class Frog(object):
     def speak(self):
         print('ribbit')
 
-
+    grid = Grid(16, 16)
 
 
 
