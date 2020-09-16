@@ -1,43 +1,51 @@
 from grid import Grid
 import random
-
+x = 99
 
 class Structure(object):
 
-    def __init__(self, name, compass_axis=None, layout=None, grid=None, anchors=None, area=None, volume=None):
+    # Psuedocode: STRUCTURES
+    """
+        args(self, layout, compass_axis[i.e. North-South, West-East)
+        attributes:
+        layout: a matrix that the subclass will return to the grid, which the grid
+        will use to build the structure.
+        area: the amount of space taken up by the matrix
+        volume: the total amount of movable squares used in the structure. This might be
+        used to lend weight to certain structures. Perhaps a grid sector needs at least one room of a
+        certain volume so it's not just constantly building halls?
+
+        returns a new set of anchors for the grid to operate on.
+
+        structure subclasses
+    """
+
+    def __init__(self, name=None, compass_axis=None, layout=None, area=None, volume=None):
         self.name = name
         self.axis = compass_axis
-        # It might be easier to just use ONE anchor point
-        self.anchor1y = anchors[0][0]
-        self.anchor1x = anchors[0][1]
-        self.anchor2y = anchors[1][0]
-        self.anchor2x = anchors[1][1]
-        self.grid_squares = grid
         self.layout = layout
-        self.area = area = area
+        self.area = area
         self.volume = volume
 
-    def construct(self):
-        # This is assuming a northern entrance building downwards
-        for rows in self.layout:
-            anchor1x = self.anchor1x
-            anchor1y = self.anchor1y - 1
-            for column in rows:
-                for square in column:
-                    if self.grid_squares[anchor1x][anchor1y] != square:
-                        self.grid_squares[anchor1x][anchor1y] = square
-                anchor1y - 1
+    def check_attributes(self):
+        print([self.volume, self.area])
+        return [self.volume, self.area]
+
+    def blueprint(self):
+        print(self.layout)
+        return self.layout
 
     def __str__(self):
-        print(self.grid_squares)
-        return "{0.anchor1y}, {0.anchor1x}, {0.anchor2y}, {0.anchor2x}".format(self)
-        # print(self.anchor1y, self.anchor1x)
-        # print(self.anchor2y, self.anchor2x)
+        return "{0.layout}".format(self)
 
 
 class ShortHallway(Structure):
 
-    def __init__(self, name, anchors, grid_squares):
+    # Okay that problem you had earlier where you were getting too many
+    # arguments? The way is that the __init__ at the top takes all the position arguments
+    # you feed to the method, while the super().__init__ takes all the ones you want to hardcode
+    # Together they combine to assign all the properties laid out in the superclss.
+    def __init__(self, compass_axis):
         # super().__init__(name=name)
         super().__init__(name='Short Hallway', layout=[
             [1, 0, 1],
@@ -45,4 +53,16 @@ class ShortHallway(Structure):
             [1, 0, 1],
             [1, 0, 1],
             [1, 0, 1],
-        ], anchors=anchors)
+        ], volume=15, area=15)
+
+
+class TeeHall(Structure):
+    def __init__(self, compass_axis):
+        super().__init__(name='Tee Hall', layout=[
+            [x, 1, 0, 1, x],
+            [x, 1, 0, 1, x],
+            [x, 1, 0, 1, x],
+            [1, 1, 0, 1, 1],
+            [0, 0, 0, 0, 0],
+            [1, 1, 1, 1, 1]
+        ], volume=9, area=24)
