@@ -1,5 +1,5 @@
 import random
-x = 99
+x = None
 
 
 class Structure(object):
