@@ -55,6 +55,7 @@ class Grid(object):
         # THIS SHOULD BE USED FOR NORTH TO SOUTH STRUCTURES ONLY
         # self.anchors = self.offset()
         if self.anchors[0][2] == "S":
+            layout = self.structure.layout
             current_y = self.anchors[0][0]
             current_x = self.anchors[0][1]
             print("Current Y: {0}".format(current_y))
@@ -91,22 +92,17 @@ class Grid(object):
                         pass
                 current_y += 1
                 current_x = self.anchors[0][1]
-        # WTF isn't this triggering?
+        # Rooms anchored north to south flip now.
         elif self.anchors[0][2] == "N":
-            layout_y = 0
+            layout = self.current_structure.layout
+            layout_y = len(layout) - 1
             current_y = self.__setY - len(self.current_structure.layout) + 1
             current_x = self.anchors[0][1]
             print("Is this triggering at all?")
-            # Somehow this is triggering but not doing anything
-            # This while loop is not triggering for some reason
             print("Current Y: {0}".format(current_y))
             print(len(self.current_structure.layout[0]) + 1)
             while current_y < self.__setY + 1:
-                # print("Is this while loop triggering?")
-                # print("Current X: {0}".format(current_x))
                 for square in self.current_structure.layout[layout_y]:
-                    print("Current X: {0}".format(current_x))
-                    print("Current Y: {0}".format(current_y))
                     if square == 1:
                         self.squares[current_y][current_x] = square
                         current_x += 1
@@ -133,7 +129,7 @@ class Grid(object):
                     else:
                         current_x += 1
                         pass
-                layout_y += 1
+                layout_y -= 1
                 current_y += 1
                 current_x = self.anchors[0][1]
         print(self.squares)
@@ -150,8 +146,7 @@ class Grid(object):
 # Is it grids job to keep track of what structures it should or shouldn't be building?
 
 def emptyGrid(intDim):
-    # myPen.begin_fill()
-    # 0 deg.
+    myPen.begin_fill()
     myPen.forward(intDim)
     myPen.left(90)
     # 90 deg.
