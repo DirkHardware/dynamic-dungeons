@@ -15,12 +15,12 @@ class Structure(object):
         used to lend weight to certain structures. Perhaps a grid sector needs at least one room of a
         certain volume so it's not just constantly building halls?
 
-        returns a new set of anchor for the grid to operate on.
+        returns a new set of anchors for the grid to operate on.
 
         structure subclasses
 
-        80's are anchor points; 80 is a north to south anchor, 81 is an east to west anchor, 82
-        is a south to north anchor
+        80's are anchors points; 80 is a north to south ("S") anchors, 81 is an west to east anchor ("E"),
+        82 is a south to north anchor ("N"), 83 is an east to west anchor ("W")
     """
 
     def __init__(self, name=None, compass_axis=None, layout=None, area=None, volume=None, anchor=None):
@@ -56,7 +56,7 @@ class ShortHallway(Structure):
             [1, 0, 0, 1],
             [1, 0, 0, 1],
             [1, 0, 0, 1],
-            [80, 0, 0, 1],
+            [82, 0, 0, 1],
         ], volume=15, area=15, anchor=[0, 0])
 
 

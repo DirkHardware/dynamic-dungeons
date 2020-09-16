@@ -8,20 +8,20 @@ class Grid(object):
     """
     Fuck it. From now on Grid is going to handle building itself to maintain
     single source of truth. Structure objects merely return layouts and the build
-    method for grid will be used to determine its own anchor points.
+    method for grid will be used to determine its own anchors points.
     """
 
     def __init__(self, width, height):
         self.__setX = width
         self.__setY = height
         # We don't need entrance dirs because we can just use entrance
-        # dirs to set our first anchor instead.
+        # dirs to set our first anchors instead.
         self.current_structure = structures.TeeHall(0)
         self.all_structures = [structures.ShortHallway(0), structures.TeeHall(0)]
         self.valid_structures = [structures.ShortHallway(0), structures.TeeHall(0)]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
-        self.anchor = [0, 7]
+        self.anchors = [[0, 7, "S"]]
         self.squares = [[]]
         for columns in range(0, self.__setX):
             self.squares[0].append(0)
@@ -44,37 +44,59 @@ class Grid(object):
                 else:
                     offset_found = True
                     # print(offset)
-        self.anchor[1] += offset
-        # print(self.anchor)
+        self.anchors[0][1] += offset
+        # print(self.anchors)
         # print(offset)
-        return self.anchor
+        return self.anchors
 
     def build(self):
         # print(self.current_structure)
         # THIS SHOULD BE USED FOR NORTH TO SOUTH STRUCTURES ONLY
-        # self.anchor = self.offset()
-        current_y = self.anchor[0]
-        current_x = self.anchor[1]
-        while current_y < len(self.current_structure.layout[0]) + 1:
-            for square in self.current_structure.layout[current_y]:
-                if square is not structures.x:
-                    grid.squares[current_y][current_x] = square
-                    current_x += 1
-                else:
-                    current_x += 1
-                    pass
-            current_y += 1
-            current_x = self.anchor[1]
+        # self.anchors = self.offset()
+        current_y = self.anchors[0][0]
+        current_x = self.anchors[0][1]
+        if self.anchors[0][2] == "S":
+            while current_y < len(self.current_structure.layout[0]) + 1:
+                for square in self.current_structure.layout[current_y]:
+                    if square == 1:
+                        grid.squares[current_y][current_x] = square
+                        current_x += 1
+                    elif square == 80:
+                        print("This is anchor!")
+                        self.anchors.append([current_y, current_x, "S"])
+                        grid.squares[current_y][current_x] = square
+                        current_x += 1
+                    elif square == 81:
+                        print("This is anchor!")
+                        self.anchors.append([current_y, current_x, "E"])
+                        grid.squares[current_y][current_x] = square
+                        current_x += 1
+                    elif square == 82:
+                        print("This is anchor!")
+                        self.anchors.append([current_y, current_x, "N"])
+                        grid.squares[current_y][current_x] = square
+                        current_x += 1
+                    elif square == 83:
+                        print("This is anchor!")
+                        self.anchors.append([current_y, current_x, "W"])
+                        grid.squares[current_y][current_x] = square
+                        current_x += 1
+                    else:
+                        current_x += 1
+                        pass
+                current_y += 1
+                current_x = self.anchors[0][1]
         print(self.squares)
+        print(self.anchors)
         # print("Current X:{0}, Current Y: {1}".format(current_x, current_y))
 
 
-# Grid starts by randomly generating anchor
+# Grid starts by randomly generating anchors
 # Structure classes a distinct signature shape expressable as a matrix that the grid class
 # can read an apply to itself. These signatures must be rotatable by compass direction.
-# Does the grid need to know the direction of all of its anchor points?
+# Does the grid need to know the direction of all of its anchors points?
 # What does the grid do apart from creating and exporting itself, along with
-# keeping track of anchor points.
+# keeping track of anchors points.
 # Is it grids job to keep track of what structures it should or shouldn't be building?
 
 def emptyGrid(intDim):
@@ -157,3 +179,4 @@ if __name__ == '__main__':
 
     myPen.getscreen().update()
     turtle.done()
+    print(grid.anchors)
