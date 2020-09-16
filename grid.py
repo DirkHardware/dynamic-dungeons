@@ -94,14 +94,14 @@ class Grid(object):
         # WTF isn't this triggering?
         elif self.anchors[0][2] == "N":
             layout_y = 0
-            current_y = self.__setY - len(self.current_structure.layout)
+            current_y = self.__setY - len(self.current_structure.layout) + 1
             current_x = self.anchors[0][1]
             print("Is this triggering at all?")
             # Somehow this is triggering but not doing anything
             # This while loop is not triggering for some reason
             print("Current Y: {0}".format(current_y))
             print(len(self.current_structure.layout[0]) + 1)
-            while current_y < self.__setY:
+            while current_y < self.__setY + 1:
                 # print("Is this while loop triggering?")
                 # print("Current X: {0}".format(current_x))
                 for square in self.current_structure.layout[layout_y]:
