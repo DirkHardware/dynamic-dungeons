@@ -1,5 +1,6 @@
 import turtle
 import random
+import structures
 
 
 class Grid(object):
@@ -10,7 +11,9 @@ class Grid(object):
         # We don't need entrance dirs because we can just use entrance
         # dirs to set our first anchors instead.
         self.valid_structures = []
-        self.anchors = []
+        # The below values are just for test purposes, remember to set
+        # them back to a blank list when you are done.
+        self.anchors = [[0, 7], [0, 9]]
         self.squares = [[]]
         for columns in range(0, self.__setX):
             self.squares[0].append(0)
@@ -39,7 +42,6 @@ class Frog(object):
     def speak(self):
         print('ribbit')
 
-    grid = Grid(16, 16)
 
 
 
@@ -70,8 +72,12 @@ class Frog(object):
 
 
 if __name__ == '__main__':
-    potential_classes = [Duck(), Dog(), Frog()]
-    pet = potential_classes[random.randint(0, 2)]
-    pet.speak()
+    grid = Grid(16, 16)
+    structure = structures.ShortHallway("none", grid.squares, grid.anchors, 0)
+    print(structure)
+
+    # potential_classes = [Duck(), Dog(), Frog()]
+    # pet = potential_classes[random.randint(0, 2)]
+    # pet.speak()
     # grid = Grid(16, 16)
     # print(grid.squares)
