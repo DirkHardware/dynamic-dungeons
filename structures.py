@@ -18,6 +18,9 @@ class Structure(object):
         returns a new set of anchor for the grid to operate on.
 
         structure subclasses
+
+        80's are anchor points; 80 is a north to south anchor, 81 is an east to west anchor, 82
+        is a south to north anchor
     """
 
     def __init__(self, name=None, compass_axis=None, layout=None, area=None, volume=None, anchor=None):
@@ -49,21 +52,22 @@ class ShortHallway(Structure):
     def __init__(self, compass_axis):
         # super().__init__(name=name)
         super().__init__(name='Short Hallway', layout=[
-            [1, 0, 1],
-            [1, 0, 1],
-            [1, 0, 1],
-            [1, 0, 1],
-            [1, 0, 1],
+            [1, 0, 0, 1],
+            [1, 0, 0, 1],
+            [1, 0, 0, 1],
+            [1, 0, 0, 1],
+            [80, 0, 0, 1],
         ], volume=15, area=15, anchor=[0, 0])
 
 
 class TeeHall(Structure):
     def __init__(self, compass_axis):
         super().__init__(name='Tee Hall', layout=[
-            [x, 1, 0, 1, x],
-            [x, 1, 0, 1, x],
-            [x, 1, 0, 1, x],
-            [1, 1, 0, 1, 1],
-            [0, 0, 0, 0, 0],
-            [1, 1, 1, 1, 1]
+            [x, 1, 0, 0, 1, x],
+            [x, 1, 0, 0, 1, x],
+            [x, 1, 0, 0, 1, x],
+            [83, 1, 0, 0, 1, 81],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [1, 1, 1, 1, 1, 1]
         ], volume=9, area=24, anchor=[0, 1])

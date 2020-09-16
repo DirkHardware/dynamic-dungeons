@@ -17,7 +17,8 @@ class Grid(object):
         # We don't need entrance dirs because we can just use entrance
         # dirs to set our first anchor instead.
         self.current_structure = structures.TeeHall(0)
-        self.valid_structures = []
+        self.all_structures = [structures.ShortHallway(0), structures.TeeHall(0)]
+        self.valid_structures = [structures.ShortHallway(0), structures.TeeHall(0)]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
         self.anchor = [0, 7]
