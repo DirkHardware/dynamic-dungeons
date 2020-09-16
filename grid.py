@@ -21,8 +21,8 @@ class Grid(object):
         self.valid_structures = [structures.ShortHallway(0), structures.TeeHall(0)]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
-        # self.anchors = [[0, 7, "S"]]
-        self.anchors = [[15, 7, "N"]]
+        # self.anchors = [[5, 7, "S"]]
+        self.anchors = [[4, 7, "N"]]
         self.squares = [[]]
         for columns in range(0, self.__setX):
             self.squares[0].append(0)
@@ -55,14 +55,14 @@ class Grid(object):
         # THIS SHOULD BE USED FOR NORTH TO SOUTH STRUCTURES ONLY
         # self.anchors = self.offset()
         if self.anchors[0][2] == "S":
-            layout = self.structure.layout
+            layout = self.current_structure.layout
             current_y = self.anchors[0][0]
             current_x = self.anchors[0][1]
             print("Current Y: {0}".format(current_y))
-            print(len(self.current_structure.layout[0]) + 1)
-            while current_y < len(self.current_structure.layout[0]) + 1:
+            print(len(layout[0]) + 1)
+            while current_y < len(layout[0]) + 1:
                 print("Current X: {0}".format(current_x))
-                for square in self.current_structure.layout[current_y]:
+                for square in layout[current_y]:
                     print("Current X: {0}".format(current_x))
                     if square == 1:
                         self.squares[current_y][current_x] = square
@@ -96,12 +96,12 @@ class Grid(object):
         elif self.anchors[0][2] == "N":
             layout = self.current_structure.layout
             layout_y = len(layout) - 1
-            current_y = self.__setY - len(self.current_structure.layout) + 1
+            current_y = self.anchors[0][0]
             current_x = self.anchors[0][1]
             print("Is this triggering at all?")
             print("Current Y: {0}".format(current_y))
             print(len(self.current_structure.layout[0]) + 1)
-            while current_y < self.__setY + 1:
+            while layout_y > -1:
                 for square in self.current_structure.layout[layout_y]:
                     if square == 1:
                         self.squares[current_y][current_x] = square
