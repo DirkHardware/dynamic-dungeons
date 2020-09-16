@@ -21,7 +21,8 @@ class Grid(object):
         self.valid_structures = [structures.ShortHallway(0), structures.TeeHall(0)]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
-        self.anchors = [[0, 7, "S"]]
+        # self.anchors = [[0, 7, "S"]]
+        self.anchors = [[15, 7, "N"]]
         self.squares = [[]]
         for columns in range(0, self.__setX):
             self.squares[0].append(0)
@@ -53,13 +54,17 @@ class Grid(object):
         # print(self.current_structure)
         # THIS SHOULD BE USED FOR NORTH TO SOUTH STRUCTURES ONLY
         # self.anchors = self.offset()
-        current_y = self.anchors[0][0]
-        current_x = self.anchors[0][1]
         if self.anchors[0][2] == "S":
+            current_y = self.anchors[0][0]
+            current_x = self.anchors[0][1]
+            print("Current Y: {0}".format(current_y))
+            print(len(self.current_structure.layout[0]) + 1)
             while current_y < len(self.current_structure.layout[0]) + 1:
+                print("Current X: {0}".format(current_x))
                 for square in self.current_structure.layout[current_y]:
+                    print("Current X: {0}".format(current_x))
                     if square == 1:
-                        grid.squares[current_y][current_x] = square
+                        self.squares[current_y][current_x] = square
                         current_x += 1
                     elif square == 80:
                         print("This is anchor!")
@@ -84,6 +89,51 @@ class Grid(object):
                     else:
                         current_x += 1
                         pass
+                current_y += 1
+                current_x = self.anchors[0][1]
+        # WTF isn't this triggering?
+        elif self.anchors[0][2] == "N":
+            layout_y = 0
+            current_y = self.__setY - len(self.current_structure.layout)
+            current_x = self.anchors[0][1]
+            print("Is this triggering at all?")
+            # Somehow this is triggering but not doing anything
+            # This while loop is not triggering for some reason
+            print("Current Y: {0}".format(current_y))
+            print(len(self.current_structure.layout[0]) + 1)
+            while current_y < self.__setY:
+                # print("Is this while loop triggering?")
+                # print("Current X: {0}".format(current_x))
+                for square in self.current_structure.layout[layout_y]:
+                    print("Current X: {0}".format(current_x))
+                    print("Current Y: {0}".format(current_y))
+                    if square == 1:
+                        self.squares[current_y][current_x] = square
+                        current_x += 1
+                    elif square == 80:
+                        print("This is anchor!")
+                        self.anchors.append([current_y, current_x, "S"])
+                        grid.squares[current_y][current_x] = square
+                        current_x += 1
+                    elif square == 81:
+                        print("This is anchor!")
+                        self.anchors.append([current_y, current_x, "E"])
+                        grid.squares[current_y][current_x] = square
+                        current_x += 1
+                    elif square == 82:
+                        print("This is anchor!")
+                        self.anchors.append([current_y, current_x, "N"])
+                        grid.squares[current_y][current_x] = square
+                        current_x += 1
+                    elif square == 83:
+                        print("This is anchor!")
+                        self.anchors.append([current_y, current_x, "W"])
+                        grid.squares[current_y][current_x] = square
+                        current_x += 1
+                    else:
+                        current_x += 1
+                        pass
+                layout_y += 1
                 current_y += 1
                 current_x = self.anchors[0][1]
         print(self.squares)
