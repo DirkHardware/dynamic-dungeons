@@ -19,8 +19,8 @@ class Structure(object):
 
         structure subclasses
 
-        80's are anchors points; 80 is a north to south ("S") anchors, 81 is an west to east anchor ("E"),
-        82 is a south to north anchor ("N"), 83 is an east to west anchor ("W")
+        80's are anchors points; 80 is a north to south ("S") anchors, 81 is an east to west anchor ("W"),
+        82 is a south to north anchor ("N"), 83 is a west to east anchor ("E")
     """
 
     def __init__(self, name=None, compass_axis=None, layout=None, area=None, volume=None, anchor=None):
@@ -66,7 +66,7 @@ class TeeHall(Structure):
             [x, 1, 0, 0, 1, x],
             [x, 1, 0, 0, 1, x],
             [x, 1, 0, 0, 1, x],
-            [83, 1, 0, 0, 1, 81],
+            ["W", 1, 0, 0, 1, "E"],
             [0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0],
             [1, 1, 1, 1, 1, 1]
