@@ -21,8 +21,8 @@ class Grid(object):
         self.valid_structures = [structures.ShortHallway(0), structures.TeeHall(0)]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
-        self.anchors = [[5, 7, "E"]]
-        # self.anchors = [[4, 7, "N"]]
+        # self.anchors = [[5, 7, "W"]]
+        self.anchors = [[4, 7, "S"]]
         self.squares = [[]]
         for columns in range(0, self.__setX):
             self.squares[0].append(0)
@@ -63,7 +63,7 @@ class Grid(object):
     def build(self):
         # self.anchors = self.offset()
         anchor_direction = self.anchors[0][2]
-        if anchor_direction == "N":
+        if anchor_direction == "S":
             layout = self.current_structure.layout
             layout_y = 0
             current_y = self.anchors[0][0]
@@ -96,7 +96,7 @@ class Grid(object):
                 current_y += 1
                 current_x = self.anchors[0][1]
         # Rooms anchored north to south flip now.
-        elif anchor_direction == "S":
+        elif anchor_direction == "N":
             layout = self.current_structure.layout
             layout_y = len(layout) - 1
             current_y = self.anchors[0][0]
@@ -128,7 +128,7 @@ class Grid(object):
                 layout_y -= 1
                 current_y += 1
                 current_x = self.anchors[0][1]
-        elif anchor_direction == "E":
+        elif anchor_direction == "W":
             layout = self.current_structure.layout
             layout_y = 0
             current_y = self.anchors[0][0]
@@ -168,7 +168,7 @@ class Grid(object):
                 layout_y += 1
                 current_x += 1
                 current_y = self.anchors[0][1]
-        elif anchor_direction == "W":
+        elif anchor_direction == "E":
             layout = self.current_structure.layout
             layout_y = 0
             current_y = self.anchors[0][0]
