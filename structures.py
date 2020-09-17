@@ -48,7 +48,7 @@ class ShortHallway(Structure):
     # Okay that problem you had earlier where you were getting too many
     # arguments? The way is that the __init__ at the top takes all the position arguments
     # you feed to the method, while the super().__init__ takes all the ones you want to hardcode
-    # Together they combine to assign all the properties laid out in the superclss.
+    # Together they combine to assign all the properties laid out in the superclass.
     def __init__(self, compass_axis):
         # super().__init__(name=name)
         super().__init__(name='Short Hallway', layout=[

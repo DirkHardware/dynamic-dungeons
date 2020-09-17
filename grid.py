@@ -21,7 +21,7 @@ class Grid(object):
         self.valid_structures = [structures.ShortHallway(0), structures.TeeHall(0)]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
-        self.anchors = [[5, 7, "W"]]
+        self.anchors = [[5, 7, "E"]]
         # self.anchors = [[4, 7, "N"]]
         self.squares = [[]]
         for columns in range(0, self.__setX):
@@ -50,42 +50,42 @@ class Grid(object):
         # print(offset)
         return self.anchors
 
+    def create_anchor(self, y, x, square, anchor_direction):
+        if square == 80:
+            self.anchors.append([y, x, "S"])
+        elif square == 81:
+            self.anchors.append([y, x, "E"])
+        elif square == 82:
+            self.anchors.append([y, x, "N"])
+        else:
+            self.anchors.append([y, x, "W"])
+
     def build(self):
-        # print(self.current_structure)
-        # THIS SHOULD BE USED FOR NORTH TO SOUTH STRUCTURES ONLY
         # self.anchors = self.offset()
         anchor_direction = self.anchors[0][2]
-        if anchor_direction == "S":
+        if anchor_direction == "N":
             layout = self.current_structure.layout
             layout_y = 0
             current_y = self.anchors[0][0]
             current_x = self.anchors[0][1]
-            print("Current Y: {0}".format(current_y))
-            print(len(layout[0]) + 1)
             while layout_y < len(layout[0]) + 1:
-                print("Current X: {0}".format(current_x))
                 for square in layout[layout_y]:
-                    print("Current X: {0}".format(current_x))
                     if square == 1:
                         self.squares[current_y][current_x] = square
                         current_x += 1
                     elif square == 80:
-                        print("This is anchor!")
                         self.anchors.append([current_y, current_x, "S"])
                         grid.squares[current_y][current_x] = square
                         current_x += 1
                     elif square == 81:
-                        print("This is anchor!")
                         self.anchors.append([current_y, current_x, "E"])
                         grid.squares[current_y][current_x] = square
                         current_x += 1
                     elif square == 82:
-                        print("This is anchor!")
                         self.anchors.append([current_y, current_x, "N"])
                         grid.squares[current_y][current_x] = square
                         current_x += 1
                     elif square == 83:
-                        print("This is anchor!")
                         self.anchors.append([current_y, current_x, "W"])
                         grid.squares[current_y][current_x] = square
                         current_x += 1
@@ -96,36 +96,29 @@ class Grid(object):
                 current_y += 1
                 current_x = self.anchors[0][1]
         # Rooms anchored north to south flip now.
-        elif anchor_direction == "N":
+        elif anchor_direction == "S":
             layout = self.current_structure.layout
             layout_y = len(layout) - 1
             current_y = self.anchors[0][0]
             current_x = self.anchors[0][1]
-            print("Is this triggering at all?")
-            print("Current Y: {0}".format(current_y))
-            print(len(self.current_structure.layout[0]) + 1)
             while layout_y > -1:
                 for square in self.current_structure.layout[layout_y]:
                     if square == 1:
                         self.squares[current_y][current_x] = square
                         current_x += 1
                     elif square == 80:
-                        print("This is anchor!")
                         self.anchors.append([current_y, current_x, "S"])
                         grid.squares[current_y][current_x] = square
                         current_x += 1
                     elif square == 81:
-                        print("This is anchor!")
                         self.anchors.append([current_y, current_x, "E"])
                         grid.squares[current_y][current_x] = square
                         current_x += 1
                     elif square == 82:
-                        print("This is anchor!")
                         self.anchors.append([current_y, current_x, "N"])
                         grid.squares[current_y][current_x] = square
                         current_x += 1
                     elif square == 83:
-                        print("This is anchor!")
                         self.anchors.append([current_y, current_x, "W"])
                         grid.squares[current_y][current_x] = square
                         current_x += 1
@@ -135,37 +128,37 @@ class Grid(object):
                 layout_y -= 1
                 current_y += 1
                 current_x = self.anchors[0][1]
-        elif anchor_direction == "W":
+        elif anchor_direction == "E":
             layout = self.current_structure.layout
             layout_y = 0
             current_y = self.anchors[0][0]
             current_x = self.anchors[0][1]
-            print("Current Y: {0}".format(current_y))
-            print(len(layout[0]) + 1)
             while layout_y < len(layout[0]) + 1:
-                print("Current X: {0}".format(current_x))
                 for square in layout[layout_y]:
-                    print("Current X: {0}".format(current_x))
                     if square == 1:
                         self.squares[current_y][current_x] = square
                         current_y += 1
                     elif square == 80:
-                        print("This is anchor!")
+                        square -= 1
+                        print(square)
                         self.anchors.append([current_y, current_x, "S"])
                         grid.squares[current_y][current_x] = square
                         current_y += 1
                     elif square == 81:
-                        print("This is anchor!")
+                        square -= 1
+                        print(square)
                         self.anchors.append([current_y, current_x, "E"])
                         grid.squares[current_y][current_x] = square
                         current_y += 1
                     elif square == 82:
-                        print("This is anchor!")
+                        square -= 1
+                        print(square)
                         self.anchors.append([current_y, current_x, "N"])
                         grid.squares[current_y][current_x] = square
                         current_y += 1
                     elif square == 83:
-                        print("This is anchor!")
+                        square -= 1
+                        print(square)
                         self.anchors.append([current_y, current_x, "W"])
                         grid.squares[current_y][current_x] = square
                         current_y += 1
@@ -175,7 +168,46 @@ class Grid(object):
                 layout_y += 1
                 current_x += 1
                 current_y = self.anchors[0][1]
-            pass
+        elif anchor_direction == "W":
+            layout = self.current_structure.layout
+            layout_y = 0
+            current_y = self.anchors[0][0]
+            current_x = self.anchors[0][1]
+            while layout_y < len(layout[0]) + 1:
+                for square in layout[layout_y]:
+                    if square == 1:
+                        self.squares[current_y][current_x] = square
+                        current_y += 1
+                    elif square == 80:
+                        square -= 1
+                        print(square)
+                        self.anchors.append([current_y, current_x, "S"])
+                        grid.squares[current_y][current_x] = square
+                        current_y += 1
+                    elif square == 81:
+                        square -= 1
+                        print(square)
+                        self.anchors.append([current_y, current_x, "E"])
+                        grid.squares[current_y][current_x] = square
+                        current_y += 1
+                    elif square == 82:
+                        square = 1
+                        print(square)
+                        self.anchors.append([current_y, current_x, "N"])
+                        grid.squares[current_y][current_x] = square
+                        current_y += 1
+                    elif square == 83:
+                        square -= 1
+                        print(square)
+                        self.anchors.append([current_y, current_x, "W"])
+                        grid.squares[current_y][current_x] = square
+                        current_y += 1
+                    else:
+                        current_y += 1
+                        pass
+            layout_y += 1
+            current_x -= 1
+            current_y = self.anchors[0][1]
         print(self.squares)
         print(self.anchors)
         # print("Current X:{0}, Current Y: {1}".format(current_x, current_y))
