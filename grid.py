@@ -21,8 +21,8 @@ class Grid(object):
         self.valid_structures = [structures.ShortHallway(0), structures.TeeHall(0)]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
-        # self.anchors = [[5, 7, "W"]]
-        self.anchors = [[4, 7, "S"]]
+        self.anchors = [[5, 7, "E"]]
+        # self.anchors = [[4, 7, "S"]]
         self.squares = [[]]
         for columns in range(0, self.__setX):
             self.squares[0].append(0)
@@ -174,7 +174,7 @@ class Grid(object):
             current_y = self.anchors[0][0]
             current_x = self.anchors[0][1]
             while layout_y < len(layout[0]) + 1:
-                for square in layout[layout_y]:
+                for square in reversed(layout[layout_y]):
                     if square == 1:
                         self.squares[current_y][current_x] = square
                         current_y += 1
@@ -191,7 +191,7 @@ class Grid(object):
                         grid.squares[current_y][current_x] = square
                         current_y += 1
                     elif square == 82:
-                        square = 1
+                        square -= 1
                         print(square)
                         self.anchors.append([current_y, current_x, "N"])
                         grid.squares[current_y][current_x] = square
@@ -205,9 +205,9 @@ class Grid(object):
                     else:
                         current_y += 1
                         pass
-            layout_y += 1
-            current_x -= 1
-            current_y = self.anchors[0][1]
+                layout_y += 1
+                current_x += 1
+                current_y = self.anchors[0][1]
         print(self.squares)
         print(self.anchors)
         # print("Current X:{0}, Current Y: {1}".format(current_x, current_y))
@@ -300,4 +300,5 @@ if __name__ == '__main__':
 
     myPen.getscreen().update()
     turtle.done()
-    print(grid.anchors)
+    for row in grid.squares:
+        print(row, '\n')
