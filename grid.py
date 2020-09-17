@@ -21,8 +21,8 @@ class Grid(object):
         self.valid_structures = [structures.ShortHallway(0), structures.TeeHall(0)]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
-        # self.anchors = [[5, 7, "S"]]
-        self.anchors = [[4, 7, "N"]]
+        self.anchors = [[5, 7, "S"]]
+        # self.anchors = [[4, 7, "N"]]
         self.squares = [[]]
         for columns in range(0, self.__setX):
             self.squares[0].append(0)
@@ -54,15 +54,17 @@ class Grid(object):
         # print(self.current_structure)
         # THIS SHOULD BE USED FOR NORTH TO SOUTH STRUCTURES ONLY
         # self.anchors = self.offset()
-        if self.anchors[0][2] == "S":
+        anchor_direction = self.anchors[0][2]
+        if anchor_direction == "S":
             layout = self.current_structure.layout
+            layout_y = 0
             current_y = self.anchors[0][0]
             current_x = self.anchors[0][1]
             print("Current Y: {0}".format(current_y))
             print(len(layout[0]) + 1)
-            while current_y < len(layout[0]) + 1:
+            while layout_y < len(layout[0]) + 1:
                 print("Current X: {0}".format(current_x))
-                for square in layout[current_y]:
+                for square in layout[layout_y]:
                     print("Current X: {0}".format(current_x))
                     if square == 1:
                         self.squares[current_y][current_x] = square
@@ -90,10 +92,11 @@ class Grid(object):
                     else:
                         current_x += 1
                         pass
+                layout_y += 1
                 current_y += 1
                 current_x = self.anchors[0][1]
         # Rooms anchored north to south flip now.
-        elif self.anchors[0][2] == "N":
+        elif anchor_direction == "N":
             layout = self.current_structure.layout
             layout_y = len(layout) - 1
             current_y = self.anchors[0][0]
@@ -132,6 +135,8 @@ class Grid(object):
                 layout_y -= 1
                 current_y += 1
                 current_x = self.anchors[0][1]
+        elif anchor_direction == "W":
+            pass
         print(self.squares)
         print(self.anchors)
         # print("Current X:{0}, Current Y: {1}".format(current_x, current_y))
