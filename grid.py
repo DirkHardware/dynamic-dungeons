@@ -222,8 +222,9 @@ def fillGrid(intDim):
     myPen.end_fill()
     myPen.setheading(0)
 
+
 if __name__ == '__main__':
-    grid = Grid(16, 16)
+    grid = Grid(40, 40)
     grid.offset()
     grid.build()
     # hallway = structures.ShortHallway(0)
@@ -240,7 +241,7 @@ if __name__ == '__main__':
     myPen.speed(0)
     myPen.color("#000000")
 
-    boxSize = 10
+    boxSize = 5
     # Position myPen in top left area of the screen
     myPen.penup()
     # Below var was originally -100 I think.
