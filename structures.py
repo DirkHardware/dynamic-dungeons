@@ -55,7 +55,7 @@ class ShortHallway(Structure):
             [1, 0, 0, 1],
             [1, 0, 0, 1],
             [1, 0, 0, 1],
-            [82, 0, 0, 1],
+            ["W", 0, 0, 1],
         ], volume=15, area=15, anchor=[0, 0])
 
 
@@ -74,7 +74,7 @@ class TeeHall(Structure):
 
 class CircleRoom7x6(Structure):
     def __init__(self):
-        super().__init__(name="Circle Room 6x6", layout=[
+        super().__init__(name="Circle Room 7x6", layout=[
             [x, x, 1, 0, 0, 1, x, x],
             [x, 1, 0, 0, 0, 0, 1, x],
             [1, 0, 0, 0, 0, 0, 0, 1],
@@ -82,4 +82,4 @@ class CircleRoom7x6(Structure):
             [x, 1, 0, 0, 0, 0, 1, x],
             [x, x, 1, 0, 0, 1, x, x],
             [x, x, x, 1, 1, x, x, x],
-        ])
+        ], volume=26, area=38)

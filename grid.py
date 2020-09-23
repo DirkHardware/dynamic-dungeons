@@ -1,9 +1,19 @@
 import turtle
 import random
 import structures
+from exceptions import SpillOverError
 
 
 class Grid(object):
+
+    @staticmethod
+    def _test_negative(index):
+        try:
+            if index < 0:
+                raise SpillOverError
+        except SpillOverError:
+            print("SpillOverError at {}".format(index))
+
 
     def __init__(self, width, height):
         self.__width = width
@@ -15,7 +25,7 @@ class Grid(object):
         self.valid_structures = [structures.ShortHallway(), structures.TeeHall()]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
-        self.anchors = [[5, 7, "N"]]
+        self.anchors = [[2, 11, "N"]]
         # self.anchors = [[4, 7, "S"]]
         self.squares = [[]]
         for columns in range(0, self.__width):
@@ -39,7 +49,8 @@ class Grid(object):
                     # print(offset)
                 else:
                     offset_found = True
-                    # print(offset)
+                    print("Offset: {}".format(offset))
+                    break
         self.anchors[0][1] += offset
         # print(self.anchors)
         # print(offset)
@@ -86,17 +97,20 @@ class Grid(object):
                 self.anchors.append([y, x, "N"])
 
     def build(self):
-        # self.anchors = self.offset()
+        self.anchors = self.offset()
         anchor_direction = self.anchors[0][2]
         if anchor_direction == "S":
             layout = self.current_structure.layout
             layout_y = 0
             current_y = self.anchors[0][0]
             current_x = self.anchors[0][1]
-            while layout_y < len(layout[0]) + 1:
+            while layout_y < len(layout):
                 for square in layout[layout_y]:
                     if square == 1:
+                        self._test_negative(current_x)
                         self.squares[current_y][current_x] = square
+                        print("Current_x: {}".format(current_x))
+                        print("Current_y: {}".format(current_y))
                         current_x += 1
                     elif isinstance(square, str):
                         self.create_anchor(current_y, current_x, square, anchor_direction)
@@ -114,9 +128,12 @@ class Grid(object):
             current_y = self.anchors[0][0]
             current_x = self.anchors[0][1]
             while layout_y > -1:
-                for square in self.current_structure.layout[layout_y]:
+                for square in layout[layout_y]:
                     if square == 1:
+                        self._test_negative(current_x)
                         self.squares[current_y][current_x] = square
+                        print("Current_x: {}".format(current_x))
+                        print("Current_y: {}".format(current_y))
                         current_x += 1
                     elif isinstance(square, str):
                         self.create_anchor(current_y, current_x, square, anchor_direction)
@@ -138,7 +155,7 @@ class Grid(object):
                         self.squares[current_y][current_x] = square
                         current_y += 1
                     elif isinstance(square, str):
-                        print(square)
+                        # print(square)
                         self.create_anchor(current_y, current_x, square, anchor_direction)
                         grid.squares[current_y][current_x] = square
                         current_y += 1
@@ -201,8 +218,9 @@ class Grid(object):
         determine cluster size. Maybe it's not a bad idea to break up the map into sectors based on the initial 
         entrance structure. 
     """
-    def blueprint(self):
-       pass
+    # def blueprint(self):
+    #     for anchor in self.anchors:
+    #     pass
 
 
 
