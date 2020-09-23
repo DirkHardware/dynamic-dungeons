@@ -6,8 +6,8 @@ import structures
 class Grid(object):
 
     def __init__(self, width, height):
-        self.__setX = width
-        self.__setY = height
+        self.__width = width
+        self.__height = height
         # We don't need entrance dirs because we can just use entrance
         # dirs to set our first anchors instead.
         self.current_structure = structures.CircleRoom7x6()
@@ -18,12 +18,12 @@ class Grid(object):
         self.anchors = [[5, 7, "N"]]
         # self.anchors = [[4, 7, "S"]]
         self.squares = [[]]
-        for columns in range(0, self.__setX):
+        for columns in range(0, self.__width):
             self.squares[0].append(0)
 
-        for rows in range(0, self.__setY):
+        for rows in range(0, self.__height):
             row = []
-            for columns in range(0, self.__setX):
+            for columns in range(0, self.__width):
                 row.append(0)
             self.squares.append(row)
 
