@@ -5,20 +5,14 @@ import structures
 
 class Grid(object):
 
-    """
-    Fuck it. From now on Grid is going to handle building itself to maintain
-    single source of truth. Structure objects merely return layouts and the build
-    method for grid will be used to determine its own anchors points.
-    """
-
     def __init__(self, width, height):
         self.__setX = width
         self.__setY = height
         # We don't need entrance dirs because we can just use entrance
         # dirs to set our first anchors instead.
-        self.current_structure = structures.TeeHall(0)
-        self.all_structures = [structures.ShortHallway(0), structures.TeeHall(0)]
-        self.valid_structures = [structures.ShortHallway(0), structures.TeeHall(0)]
+        self.current_structure = structures.CircleRoom7x6()
+        self.all_structures = [structures.ShortHallway(), structures.TeeHall()]
+        self.valid_structures = [structures.ShortHallway(), structures.TeeHall()]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
         self.anchors = [[5, 7, "N"]]
@@ -175,7 +169,41 @@ class Grid(object):
                 current_y = self.anchors[0][1]
         print(self.squares)
         print(self.anchors)
-        # print("Current X:{0}, Current Y: {1}".format(current_x, current_y))
+
+    """
+    Plan 1: Unrestrained Building 
+        -Entrance anchor is determined
+        -Valid structures is a dictionary of keys representing different categories of rooms matched to arrays of 
+        structures
+        -Algorithim selects a structure from an appropriate category (hallways? junctions?)
+        -A method checks to see if the structure spills out of the index. If yes: Pick a different structure, if not, 
+        add the structure.
+        Anchor[0], which is always the anchor we are building off of, will be deleted.
+        ***This will have the effect of making the map build out as much as it can from one T-square anchor before 
+        the other gets any room to do anything. Maybe this is a bad idea.***
+        ***Maybe we could get around this by doing away with Anchor[0] as being the only anchor we're building off of,
+        and iterate through our anchors, building structures***
+        
+    Plan 2: Cluster Building
+        -Entrance anchor is determined
+        -Valid structures is a dictionary of keys representing different categories of rooms matched to arrays of 
+        structures
+        -Algorithim picks an anchor point selects a structure from an appropriate category (hallways? junctions?)
+        -Algorithim deletes starting anchor. Instead of unrestrained building, each anchor after the first will cause
+        the algorithim to randomly generate out a collection (cluster) of structures that go together, based on what 
+        category they are in and how many anchors they have (I will have to add that an attribute to structures).
+        -The Algorithim checks to see if this cluster will spill out of index or onto another structure. It then checks
+         the collective area of the structures. 
+        -If it would cause an error, reroll. The number of other available 
+         anchors will determine how numerous and large the cluster structure can be, and if it can have any open 
+         anchor points.      
+        -Repeat process for the next open anchor point, using a system that keeps track of available, building space to
+        determine cluster size. Maybe it's not a bad idea to break up the map into sectors based on the initial 
+        entrance structure. 
+    """
+    def blueprint(self):
+       pass
+
 
 
 def __str__():
