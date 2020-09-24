@@ -23,12 +23,12 @@ class Grid(object):
         self.__height = height
         # We don't need entrance dirs because we can just use entrance
         # dirs to set our first anchors instead.
-        self.current_structure = structures.CircleRoom7x6()
-        self.all_structures = [structures.ShortHallway(), structures.TeeHall()]
+        self.current_structure = structures.ShortHallway()
+        self.all_structures = [structures.ShortHallway(), structures.TeeHall(), structures.CircleRoom7x6()]
         self.valid_structures = [structures.ShortHallway(), structures.TeeHall()]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
-        self.anchors = [[2, 11, "N"]]
+        self.anchors = [[2, 11, "S"]]
         # self.anchors = [[4, 7, "S"]]
         self.squares = [[]]
         for columns in range(0, self.__width):
@@ -71,6 +71,8 @@ class Grid(object):
                 self.anchors.append([y, x, square])
             elif square == "W":
                 self.anchors.append([y, x, square])
+        # N's anchor creation merely duplicates the initial anchor, this must
+        # be addressed.
         if anchor_direction == "N":
             if square == "S":
                 self.anchors.append([y, x, "N"])
@@ -112,7 +114,7 @@ class Grid(object):
                     if square == 1:
                         self._test_negative(current_x)
                         self.squares[current_y][current_x] = square
-                        print("Current_x: {}".format(curre nt_x))
+                        print("Current_x: {}".format(current_x))
                         print("Current_y: {}".format(current_y))
                         current_x += 1
                     elif isinstance(square, str):
@@ -275,6 +277,10 @@ def fillGrid(intDim):
 if __name__ == '__main__':
     grid = Grid(40, 40)
     grid.offset()
+    grid.build()
+    del grid.anchors[0]
+    grid.current_structure = grid.all_structures[-1]
+    # grid.offset()
     grid.build()
     # hallway = structures.ShortHallway(0)
     # hallway.check_attributes()

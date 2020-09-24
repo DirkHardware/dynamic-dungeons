@@ -58,8 +58,8 @@ class ShortHallway(Structure):
             [1, 0, 0, 1],
             [1, 0, 0, 1],
             [1, 0, 0, 1],
-            ["W", 0, 0, 1],
-        ], volume=15, area=15, anchor=[0, 0], width=4)
+            ["S", 0, 0, 1],
+        ], volume=15, area=15, anchor=[0, 0], width=4, height=5)
 
 
 class TeeHall(Structure):
