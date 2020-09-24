@@ -177,7 +177,7 @@ class Grid(object):
             layout_y = 0
             current_y = self.anchors[0][0]
             current_x = self.anchors[0][1]
-            while layout_y < len(layout[0]) + 1:
+            while layout_y < len(layout):
                 for square in reversed(layout[layout_y]):
                     if square == 1:
                         self.squares[current_y][current_x] = square
