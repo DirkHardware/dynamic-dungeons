@@ -28,7 +28,7 @@ class Grid(object):
         self.valid_structures = [structures.ShortHallway(), structures.TeeHall()]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
-        self.anchors = [[2, 11, "S"]]
+        self.anchors = [[6, 11, "N"]]
         # self.anchors = [[4, 7, "S"]]
         self.squares = [[]]
         for columns in range(0, self.__width):
@@ -73,9 +73,11 @@ class Grid(object):
                 self.anchors.append([y, x, square])
         # N's anchor creation merely duplicates the initial anchor, this must
         # be addressed.
+        # I think I see what I did here. I merely changed the facing of the anchor
+        # without taking into account where it would be placed.
         if anchor_direction == "N":
             if square == "S":
-                self.anchors.append([y, x, "N"])
+                self.anchors.append([y - (self.current_structure.height + 1), x, "N"])
             elif square == "N":
                 self.anchors.append([y, x, "S"])
             elif square == "E":
