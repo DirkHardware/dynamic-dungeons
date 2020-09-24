@@ -23,12 +23,12 @@ class Grid(object):
         self.__height = height
         # We don't need entrance dirs because we can just use entrance
         # dirs to set our first anchors instead.
-        self.current_structure = structures.ShortHallway()
+        self.current_structure = structures.TeeHall()
         self.all_structures = [structures.ShortHallway(), structures.TeeHall(), structures.CircleRoom7x6()]
         self.valid_structures = [structures.ShortHallway(), structures.TeeHall()]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
-        self.anchors = [[6, 11, "N"]]
+        self.anchors = [[5, 11, "E"]]
         # self.anchors = [[4, 7, "S"]]
         self.squares = [[]]
         for columns in range(0, self.__width):
@@ -156,7 +156,8 @@ class Grid(object):
             layout_y = 0
             current_y = self.anchors[0][0]
             current_x = self.anchors[0][1]
-            while layout_y < len(layout[0]) + 1:
+            while layout_y < len(layout):
+            # while layout_y < len(layout[0]):
                 for square in layout[layout_y]:
                     if square == 1:
                         self.squares[current_y][current_x] = square
@@ -229,6 +230,17 @@ class Grid(object):
     #     for anchor in self.anchors:
     #     pass
 
+    def single_build_test():
+        grid = Grid(40, 40)
+        grid.current_structure = grid.all_structures[-1]
+        grid.offset()
+        grid.build()
+        del grid.anchors[0]
+        # grid.offset()
+        grid.build()
+        # hallway = structures.ShortHallway(0)
+        # hallway.check_attributes()
+
 
 
 def __str__():
@@ -278,12 +290,12 @@ def fillGrid(intDim):
 
 if __name__ == '__main__':
     grid = Grid(40, 40)
-    grid.offset()
+    # grid.offset()
+    grid.current_structure = grid.all_structures[-1]
     grid.build()
     del grid.anchors[0]
-    grid.current_structure = grid.all_structures[-1]
     # grid.offset()
-    grid.build()
+    # grid.build()
     # hallway = structures.ShortHallway(0)
     # hallway.check_attributes()
     # hallway.blueprint()
@@ -293,6 +305,10 @@ if __name__ == '__main__':
     # pet.speak()
     # grid = Grid(16, 16)
     # print(grid.squares)
+
+
+    # def multi_build_test():
+
     myPen = turtle.Turtle()
     # myPen.tracer(0)
     myPen.speed(0)

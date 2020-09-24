@@ -52,7 +52,6 @@ class ShortHallway(Structure):
     # you feed to the method, while the super().__init__ takes all the ones you want to hardcode
     # Together they combine to assign all the properties laid out in the superclass.
     def __init__(self):
-        # super().__init__(name=name)
         super().__init__(name='Short Hallway', layout=[
             [1, 0, 0, 1],
             [1, 0, 0, 1],
