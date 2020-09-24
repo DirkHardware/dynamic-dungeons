@@ -23,12 +23,15 @@ class Structure(object):
         82 is a south to north anchor ("N"), 83 is a west to east anchor ("E")
     """
 
-    def __init__(self, name=None, compass_axis=None, layout=None, area=None, volume=None, anchor=None):
+    def __init__(self, name=None, compass_axis=None, layout=None, area=None,
+                 volume=None, anchor=None, width=None, height=None ):
         self.name = name
         self.layout = layout
         self.area = area
         self.volume = volume
         self.anchor = anchor
+        self.width = width
+        self.height = height
 
     def check_attributes(self):
         print(self.volume, self.area, self.anchor)
@@ -56,7 +59,7 @@ class ShortHallway(Structure):
             [1, 0, 0, 1],
             [1, 0, 0, 1],
             ["W", 0, 0, 1],
-        ], volume=15, area=15, anchor=[0, 0])
+        ], volume=15, area=15, anchor=[0, 0], width=4)
 
 
 class TeeHall(Structure):
@@ -69,7 +72,7 @@ class TeeHall(Structure):
             [0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0],
             [1, 1, 1, 1, 1, 1]
-        ], volume=9, area=24, anchor=[0, 1])
+        ], volume=9, area=24, anchor=[0, 1], width=6, height=7)
 
 
 class CircleRoom7x6(Structure):
@@ -82,4 +85,4 @@ class CircleRoom7x6(Structure):
             [x, 1, 0, 0, 0, 0, 1, x],
             [x, x, 1, 0, 0, 1, x, x],
             [x, x, x, 1, 1, x, x, x],
-        ], volume=26, area=38)
+        ], volume=26, area=38, height=7, width=8)

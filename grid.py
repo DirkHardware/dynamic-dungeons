@@ -3,6 +3,9 @@ import random
 import structures
 from exceptions import SpillOverError
 
+"""Perhaps if we want to partition Grid into sectors to make life easier,
+we can make the sectors a subclass of grid, so that way they can keep track
+of their own anchors and available space. """
 
 class Grid(object):
 
@@ -109,7 +112,7 @@ class Grid(object):
                     if square == 1:
                         self._test_negative(current_x)
                         self.squares[current_y][current_x] = square
-                        print("Current_x: {}".format(current_x))
+                        print("Current_x: {}".format(curre nt_x))
                         print("Current_y: {}".format(current_y))
                         current_x += 1
                     elif isinstance(square, str):
