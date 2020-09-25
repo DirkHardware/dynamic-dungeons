@@ -10,6 +10,10 @@ of their own anchors and available space. """
 class Grid(object):
 
     @staticmethod
+    def _print_square(current_y, current_x):
+        print("Drew square @ Y: {0}, X: {1}".format(str(current_y), str(current_x)))
+
+    @staticmethod
     def _test_negative(index):
         try:
             if index < 0:
@@ -17,8 +21,7 @@ class Grid(object):
         except SpillOverError:
             print("SpillOverError at {}".format(index))
 
-
-    def __init__(self, width, height):
+    def __init__(self, width, height, starting_anchor):
         self.__width = width
         self.__height = height
         # We don't need entrance dirs because we can just use entrance
@@ -28,8 +31,7 @@ class Grid(object):
         self.valid_structures = [structures.ShortHallway(), structures.TeeHall()]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
-        self.anchors = [[5, 11, "E"]]
-        # self.anchors = [[4, 7, "S"]]
+        self.anchors = [starting_anchor]
         self.squares = [[]]
         for columns in range(0, self.__width):
             self.squares[0].append(0)
@@ -52,11 +54,10 @@ class Grid(object):
                     # print(offset)
                 else:
                     offset_found = True
-                    print("Offset: {}".format(offset))
                     break
         self.anchors[0][1] += offset
         # print(self.anchors)
-        # print(offset)
+        print("Offset Anchor: {}".format(self.anchors[0]))
         return self.anchors
 
     def create_anchor(self, y, x, square, anchor_direction):
@@ -104,6 +105,7 @@ class Grid(object):
                 self.anchors.append([y, x, "N"])
 
     def build(self):
+        print("Original anchor: {}".format(self.anchors[0]))
         self.anchors = self.offset()
         anchor_direction = self.anchors[0][2]
         if anchor_direction == "S":
@@ -116,12 +118,12 @@ class Grid(object):
                     if square == 1:
                         self._test_negative(current_x)
                         self.squares[current_y][current_x] = square
-                        print("Current_x: {}".format(current_x))
-                        print("Current_y: {}".format(current_y))
+                        self._print_square(current_x, current_y)
                         current_x += 1
                     elif isinstance(square, str):
                         self.create_anchor(current_y, current_x, square, anchor_direction)
-                        grid.squares[current_y][current_x] = square
+                        self.squares[current_y][current_x] = square
+                        self._print_square(current_x, current_y)
                         current_x += 1
                     else:
                         current_x += 1
@@ -139,12 +141,12 @@ class Grid(object):
                     if square == 1:
                         self._test_negative(current_x)
                         self.squares[current_y][current_x] = square
-                        print("Current_x: {}".format(current_x))
-                        print("Current_y: {}".format(current_y))
+                        self._print_square(current_x, current_y)
                         current_x += 1
                     elif isinstance(square, str):
                         self.create_anchor(current_y, current_x, square, anchor_direction)
-                        grid.squares[current_y][current_x] = square
+                        self.squares[current_y][current_x] = square
+                        self._print_square(current_x, current_y)
                         current_x += 1
                     else:
                         current_x += 1
@@ -154,18 +156,19 @@ class Grid(object):
         elif anchor_direction == "W":
             layout = self.current_structure.layout
             layout_y = 0
-            current_y = self.anchors[0][0]
-            current_x = self.anchors[0][1]
+            current_y = self.anchors[0][1]
+            current_x = self.anchors[0][0]
             while layout_y < len(layout):
-            # while layout_y < len(layout[0]):
                 for square in layout[layout_y]:
                     if square == 1:
                         self.squares[current_y][current_x] = square
+                        self._print_square(current_x, current_y)
                         current_y += 1
                     elif isinstance(square, str):
                         # print(square)
                         self.create_anchor(current_y, current_x, square, anchor_direction)
-                        grid.squares[current_y][current_x] = square
+                        self.squares[current_y][current_x] = square
+                        self._print_square(current_x, current_y)
                         current_y += 1
                     else:
                         current_y += 1
@@ -175,25 +178,25 @@ class Grid(object):
         elif anchor_direction == "E":
             layout = self.current_structure.layout
             layout_y = 0
-            current_y = self.anchors[0][0]
-            current_x = self.anchors[0][1]
+            current_y = self.anchors[0][1]
+            current_x = self.anchors[0][0]
             while layout_y < len(layout):
                 for square in reversed(layout[layout_y]):
                     if square == 1:
                         self.squares[current_y][current_x] = square
+                        self._print_square(current_x, current_y)
                         current_y += 1
                     elif isinstance(square, str):
                         print(square)
                         self.create_anchor(current_y, current_x, square, anchor_direction)
-                        grid.squares[current_y][current_x] = square
+                        self.squares[current_y][current_x] = square
+                        self._print_square(current_x, current_y)
                         current_y += 1
                     else:
                         current_y += 1
                 layout_y += 1
                 current_x += 1
                 current_y = self.anchors[0][1]
-        print(self.squares)
-        print(self.anchors)
 
     """
     Plan 1: Unrestrained Building 
@@ -230,22 +233,12 @@ class Grid(object):
     #     for anchor in self.anchors:
     #     pass
 
-    def single_build_test():
-        grid = Grid(40, 40)
-        grid.current_structure = grid.all_structures[-1]
-        grid.offset()
+    def single_build_test(self):
+        self.current_structure = self.all_structures[-1]
         grid.build()
         del grid.anchors[0]
-        # grid.offset()
-        grid.build()
         # hallway = structures.ShortHallway(0)
         # hallway.check_attributes()
-
-
-
-def __str__():
-    print("80 is south facing, 81 is west facing, 82 is north facing, 83 is east facing")
-
 
 # Grid starts by randomly generating anchors
 # Structure classes a distinct signature shape expressable as a matrix that the grid class
@@ -289,11 +282,8 @@ def fillGrid(intDim):
 
 
 if __name__ == '__main__':
-    grid = Grid(40, 40)
-    # grid.offset()
-    grid.current_structure = grid.all_structures[-1]
-    grid.build()
-    del grid.anchors[0]
+    grid = Grid(20, 20, [7, 10, "E"])
+    grid.single_build_test()
     # grid.offset()
     # grid.build()
     # hallway = structures.ShortHallway(0)
