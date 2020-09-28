@@ -68,9 +68,9 @@ class TeeHall(Structure):
             [x, 1, 0, 0, 1, x],
             [x, 1, 0, 0, 1, x],
             [1, 1, 0, 0, 1, 1],
+            ["W", 0, 0, 0, 0, "E"],
             [0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0],
-            ["W", 1, 1, 1, 1, 1, "E"]
+            [1, 1, 1, 1, 1, 1]
         ], volume=9, area=24, anchor=[0, 1], width=6, height=7)
 
 class ThreeHall(Structure):

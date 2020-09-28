@@ -27,6 +27,12 @@ class Grid(object):
         except SpillOverError:
             print("SpillOverError at {}".format(index))
 
+    @staticmethod
+    def _get_anchor_index(structure, anchor_type):
+        for row in structure.layout:
+            if anchor_type in row:
+                return [(structure.layout.index(row)), (row.index("S"))]
+
     def __init__(self, width, height, starting_anchor):
         self.__width = width
         self.__height = height
@@ -78,7 +84,12 @@ class Grid(object):
                 else:
                     offset_found = True
                     break
-        anchor[1] += offset
+        if anchor[2] == "N" or "S":
+            print("N/S Offset" + str(offset))
+            anchor[1] += offset
+        elif anchor[2] == "E" or "W":
+            print("E/W Offset" + str(offset))
+            anchor[0] += offset
         # print(self.anchors)
         print("Offset Anchor: {}".format(anchor))
         return anchor
@@ -154,6 +165,8 @@ class Grid(object):
         # the old anchor position.
         if anchor_direction == "S":
             if square == "S":
+                anchor_index = self._get_anchor_index(structure, square)
+                print("Anchor index: " + str(anchor_index))
                 self.anchors.append([y, x, square])
                 self._test_anchor(y, x, square)
             elif square == "N":
@@ -197,6 +210,8 @@ class Grid(object):
                 self._test_anchor(y, x, "S")
         if anchor_direction == "W":
             if square == "S":
+                # difference
+                v_difference = self._get_anchor_index(structure, anchor_direction)
                 self.anchors.append([y, x, "W"])
                 self._test_anchor(y, x, "W")
             elif square == "N":
@@ -355,8 +370,8 @@ class Grid(object):
                 current_x = anchor[1]
         elif anchor_direction == "E":
             layout_y = 0
-            current_y = anchor[1]
-            current_x = anchor[0]
+            current_y = anchor[0]
+            current_x = anchor[1]
             while layout_y < len(layout):
                 for square in layout[layout_y]:
                     if square == 1:
@@ -373,11 +388,11 @@ class Grid(object):
                         current_y += 1
                 layout_y += 1
                 current_x += 1
-                current_y = anchor[1]
+                current_y = anchor[0]
         elif anchor_direction == "W":
             layout_y = 0
-            current_y = anchor[1]
-            current_x = anchor[0]
+            current_y = anchor[0]
+            current_x = anchor[1]
             while layout_y < len(layout):
                 for square in reversed(layout[layout_y]):
                     if square == 1:
@@ -393,7 +408,7 @@ class Grid(object):
                         current_y += 1
                 layout_y += 1
                 current_x -= 1
-                current_y = anchor[1]
+                current_y = anchor[0]
             del self.anchors[0]
             print("Anchors are now {}".format(self.anchors))
 
@@ -477,11 +492,12 @@ def fillGrid(intDim):
 
 
 if __name__ == '__main__':
-    grid = Grid(30, 30, [0, 8, "S"])
+    # The E and W builds are confusing the X and Y of the starting anchor. Buy why?
+    grid = Grid(30, 30, [1, 15, "S"])
     # grid.single_build_test()
-    grid.build_alternate(grid.all_structures[0], grid.anchors[0])
+    grid.build_alternate(grid.all_structures[1], grid.anchors[0])
     print(grid.anchors)
-    grid.build_alternate(grid.all_structures[2], grid.anchors[1])
+    grid.build_alternate(grid.all_structures[0], grid.anchors[1])
     # grid.build(grid.all_structures[1])
     # print(grid.anchors)
 
