@@ -107,10 +107,10 @@ class Grid(object):
         # without taking into account where it would be placed.
         if anchor_direction == "N":
             if square == "S":
-                self.anchors.append([y - (self.current_structure.height + 1), x, "N"])
+                self.anchors.append([y - self.current_structure.height, x, "N"])
                 self._test_anchor(y, x, square)
             elif square == "N":
-                self.anchors.append([y - (self.current_structure.height + 1), x, "S"])
+                self.anchors.append([y - self.current_structure.height, x, "S"])
                 self._test_anchor(y - (self.current_structure.height + 1), x, "S")
             elif square == "E":
                 self.anchors.append([y, x, square])
@@ -413,7 +413,7 @@ def fillGrid(intDim):
 
 
 if __name__ == '__main__':
-    grid = Grid(20, 20, [9, 8, "S"])
+    grid = Grid(20, 20, [9, 8, "N"])
     # grid.single_build_test()
     grid.build_alternate(grid.all_structures[0], grid.anchors[0])
     print(grid.anchors)
