@@ -61,29 +61,31 @@ class ShortHallway(Structure):
         ], volume=15, area=15, anchor=[0, 0], width=4, height=5)
 
 
-class ShortHallwayReversed(Structure):
-    def __init__(self):
-        super().__init__(name='Short Hallway', layout=[
-            ["N", 0, 0, 1],
-            [1, 0, 0, 1],
-            [1, 0, 0, 1],
-            [1, 0, 0, 1],
-            [1, 0, 0, 1],
-        ], volume=15, area=15, anchor=[0, 0], width=4, height=5)
-
-
-
 class TeeHall(Structure):
     def __init__(self):
         super().__init__(name='Tee Hall', layout=[
             [x, 1, 0, 0, 1, x],
             [x, 1, 0, 0, 1, x],
             [x, 1, 0, 0, 1, x],
-            ["W", 1, 0, 0, 1, "E"],
+            [1, 1, 0, 0, 1, 1],
             [0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0],
-            [1, 1, 1, 1, 1, 1]
+            ["W", 1, 1, 1, 1, 1, "E"]
         ], volume=9, area=24, anchor=[0, 1], width=6, height=7)
+
+class ThreeHall(Structure):
+    def __init__(self):
+        super().__init__(name = "Three Hall", layout=[
+            [x, 1, 0, 0, 1, x],
+            [x, 1, 0, 0, 1, x],
+            [x, 1, 0, 0, 1, x],
+            [1, 1, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            ["W", 1, 0, 0, 1, "E"],
+            [x, 1, 0, 0, 1, x],
+            [x, "S", 0, 0, 1, x],
+        ])
 
 
 class CircleRoom7x6(Structure):

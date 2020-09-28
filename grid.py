@@ -33,7 +33,8 @@ class Grid(object):
         # We don't need entrance dirs because we can just use entrance
         # dirs to set our first anchors instead.
         self.current_structure = structures.TeeHall()
-        self.all_structures = [structures.ShortHallway(), structures.TeeHall(), structures.CircleRoom7x6()]
+        self.all_structures = [structures.ShortHallway(), structures.TeeHall(),
+                               structures.ThreeHall(), structures.CircleRoom7x6()]
         self.valid_structures = [structures.ShortHallway(), structures.TeeHall()]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
@@ -174,7 +175,7 @@ class Grid(object):
                 self._test_anchor(y, x, square)
             elif square == "N":
                 self.anchors.append([y - structure.height, x, "S"])
-                self._test_anchor(y - (structure.height + 1), x, "S")
+                self._test_anchor(y - structure.height, x, "S")
             elif square == "E":
                 self.anchors.append([y, x, square])
                 self._test_anchor(y, x, square)
@@ -476,11 +477,11 @@ def fillGrid(intDim):
 
 
 if __name__ == '__main__':
-    grid = Grid(20, 20, [8, 8, "S"])
+    grid = Grid(30, 30, [0, 8, "S"])
     # grid.single_build_test()
     grid.build_alternate(grid.all_structures[0], grid.anchors[0])
     print(grid.anchors)
-    grid.build_alternate(grid.all_structures[1], grid.anchors[1])
+    grid.build_alternate(grid.all_structures[2], grid.anchors[1])
     # grid.build(grid.all_structures[1])
     # print(grid.anchors)
 
