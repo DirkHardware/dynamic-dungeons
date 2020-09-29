@@ -286,6 +286,8 @@ if __name__ == '__main__':
     print(grid.anchors)
     grid.build(grid.all_structures[1], grid.anchors[1])
     grid.build(grid.all_structures[1], grid.anchors[2])
+    grid.build(grid.all_structures[-1], grid.anchors[-1])
+
 
     myPen = turtle.Turtle()
     # myPen.tracer(0)
