@@ -27,13 +27,20 @@ class Grid(object):
         except SpillOverError:
             print("SpillOverError at {}".format(index))
 
+    @staticmethod
+    def _get_anchor_index(structure, anchor_type):
+        for row in structure.layout:
+            if anchor_type in row:
+                return [(structure.layout.index(row)), (row.index("S"))]
+
     def __init__(self, width, height, starting_anchor):
         self.__width = width
         self.__height = height
         # We don't need entrance dirs because we can just use entrance
         # dirs to set our first anchors instead.
         self.current_structure = structures.TeeHall()
-        self.all_structures = [structures.ShortHallway(), structures.TeeHall(), structures.CircleRoom7x6()]
+        self.all_structures = [structures.ShortHallway(), structures.TeeHall(),
+                               structures.ThreeHall(), structures.CircleRoom7x6()]
         self.valid_structures = [structures.ShortHallway(), structures.TeeHall()]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
@@ -41,48 +48,13 @@ class Grid(object):
         self.squares = [[]]
         for columns in range(0, self.__width):
             self.squares[0].append(0)
-
         for rows in range(0, self.__height):
             row = []
             for columns in range(0, self.__width):
                 row.append(0)
             self.squares.append(row)
 
-    # Do we actually need this method?
-    # OH YEAH. WE TOTALLY NEED THIS METHOD
-    def offset(self):
-        offset = 0
-        offset_found = False
-        while not offset_found:
-            for column in self.current_structure.layout[0]:
-                if column == structures.x:
-                    offset -= 1
-                    # print(offset)
-                else:
-                    offset_found = True
-                    break
-        self.anchors[0][1] += offset
-        # print(self.anchors)
-        print("Offset Anchor: {}".format(self.anchors[0]))
-        return self.anchors
-
-    def offset_alternate(self, anchor):
-        offset = 0
-        offset_found = False
-        while not offset_found:
-            for column in self.current_structure.layout[0]:
-                if column == structures.x:
-                    offset -= 1
-                    # print(offset)
-                else:
-                    offset_found = True
-                    break
-        anchor[1] += offset
-        # print(self.anchors)
-        print("Offset Anchor: {}".format(anchor))
-        return anchor
-
-    def create_anchor(self, y, x, square, anchor_direction):
+    def create_anchor(self, y, x, square, anchor_direction, structure):
         # South facing is the default structure direction, so there is no need
         # to change anchor facing
         # I've figured out what the problem is with rotation here. Rotation is not taking into account the the x and
@@ -90,69 +62,8 @@ class Grid(object):
         # the old anchor position.
         if anchor_direction == "S":
             if square == "S":
-                self.anchors.append([y, x, square])
-                self._test_anchor(y, x, square)
-            elif square == "N":
-                self.anchors.append([y, x, square])
-                self._test_anchor(y, x, square)
-            elif square == "E":
-                self.anchors.append([y, x, square])
-                self._test_anchor(y, x, square)
-            elif square == "W":
-                self.anchors.append([y, x, square])
-                self._test_anchor(y, x, square)
-        # N's anchor creation merely duplicates the initial anchor, this must
-        # be addressed.
-        # I think I see what I did here. I merely changed the facing of the anchor
-        # without taking into account where it would be placed.
-        if anchor_direction == "N":
-            if square == "S":
-                self.anchors.append([y - self.current_structure.height, x, "N"])
-                self._test_anchor(y, x, square)
-            elif square == "N":
-                self.anchors.append([y - self.current_structure.height, x, "S"])
-                self._test_anchor(y - (self.current_structure.height + 1), x, "S")
-            elif square == "E":
-                self.anchors.append([y, x, square])
-                self._test_anchor(y, x, square)
-            elif square == "W":
-                self.anchors.append([y, x, square])
-                self._test_anchor(y, x, square)
-        if anchor_direction == "E":
-            if square == "S":
-                self.anchors.append([y, x, "E"])
-                self._test_anchor(y, x, "E")
-            elif square == "N":
-                self.anchors.append([y, x, "W"])
-                self._test_anchor(y, x, "W")
-            elif square == "E":
-                self.anchors.append([y, x, "N"])
-                self._test_anchor(y, x, "N")
-            elif square == "W":
-                self.anchors.append([y, x, "S"])
-                self._test_anchor(y, x, "S")
-        if anchor_direction == "W":
-            if square == "S":
-                self.anchors.append([y, x, "W"])
-                self._test_anchor(y, x, "W")
-            elif square == "N":
-                self.anchors.append([y, x, "E"])
-                self._test_anchor(y, x, "E")
-            elif square == "E":
-                self.anchors.append([y, x, "S"])
-                self._test_anchor(y, x, "S")
-            elif square == "W":
-                self.anchors.append([y, x, "N"])
-                self._test_anchor(y, x, "N")
-
-    def create_anchor_alternate(self, y, x, square, anchor_direction, structure):
-        # South facing is the default structure direction, so there is no need
-        # to change anchor facing
-        # I've figured out what the problem is with rotation here. Rotation is not taking into account the the x and
-        # y changes of the anchor, and so while the next structure built is facing the right way, it's doing it from
-        # the old anchor position.
-        if anchor_direction == "S":
-            if square == "S":
+                anchor_index = self._get_anchor_index(structure, square)
+                print("Anchor index: " + str(anchor_index))
                 self.anchors.append([y, x, square])
                 self._test_anchor(y, x, square)
             elif square == "N":
@@ -174,7 +85,7 @@ class Grid(object):
                 self._test_anchor(y, x, square)
             elif square == "N":
                 self.anchors.append([y - structure.height, x, "S"])
-                self._test_anchor(y - (structure.height + 1), x, "S")
+                self._test_anchor(y - structure.height, x, "S")
             elif square == "E":
                 self.anchors.append([y, x, square])
                 self._test_anchor(y, x, square)
@@ -196,6 +107,8 @@ class Grid(object):
                 self._test_anchor(y, x, "S")
         if anchor_direction == "W":
             if square == "S":
+                # difference
+                v_difference = self._get_anchor_index(structure, anchor_direction)
                 self.anchors.append([y, x, "W"])
                 self._test_anchor(y, x, "W")
             elif square == "N":
@@ -208,105 +121,9 @@ class Grid(object):
                 self.anchors.append([y, x, "N"])
                 self._test_anchor(y, x, "N")
 
-    def build(self, structure):
-        print("Building from original anchor: {}".format(self.anchors[0]))
-        self.anchors = self.offset()
-        anchor_direction = self.anchors[0][2]
-        anchors = self.anchors
-        if anchor_direction == "S":
-            layout = structure.layout
-            layout_y = 0
-            current_y = self.anchors[0][0]
-            current_x = self.anchors[0][1]
-            while layout_y < len(layout):
-                for square in layout[layout_y]:
-                    if square == 1:
-                        self._test_negative(current_x)
-                        self.squares[current_y][current_x] = square
-                        self._print_square(current_x, current_y)
-                        current_x += 1
-                    elif isinstance(square, str):
-                        self.create_anchor(current_y, current_x, square, anchor_direction)
-                        self.squares[current_y][current_x] = square
-                        self._print_square(current_x, current_y)
-                        current_x += 1
-                    else:
-                        current_x += 1
-                layout_y += 1
-                current_y += 1
-                current_x = self.anchors[0][1]
-        # Rooms anchored north to south flip now.
-        elif anchor_direction == "N":
-            layout = self.current_structure.layout
-            layout_y = len(layout) - 1
-            current_y = self.anchors[0][0]
-            current_x = self.anchors[0][1]
-            while layout_y > -1:
-                for square in layout[layout_y]:
-                    if square == 1:
-                        self._test_negative(current_x)
-                        self.squares[current_y][current_x] = square
-                        self._print_square(current_x, current_y)
-                        current_x += 1
-                    elif isinstance(square, str):
-                        self.create_anchor(current_y, current_x, square, anchor_direction)
-                        self.squares[current_y][current_x] = square
-                        self._print_square(current_x, current_y)
-                        current_x += 1
-                    else:
-                        current_x += 1
-                layout_y -= 1
-                current_y += 1
-                current_x = self.anchors[0][1]
-        elif anchor_direction == "E":
-            layout = self.current_structure.layout
-            layout_y = 0
-            current_y = self.anchors[0][1]
-            current_x = self.anchors[0][0]
-            while layout_y < len(layout):
-                for square in layout[layout_y]:
-                    if square == 1:
-                        self.squares[current_y][current_x] = square
-                        self._print_square(current_x, current_y)
-                        current_y += 1
-                    elif isinstance(square, str):
-                        # print(square)
-                        self.create_anchor(current_y, current_x, square, anchor_direction)
-                        self.squares[current_y][current_x] = square
-                        self._print_square(current_x, current_y)
-                        current_y += 1
-                    else:
-                        current_y += 1
-                layout_y += 1
-                current_x += 1
-                current_y = self.anchors[0][1]
-        elif anchor_direction == "W":
-            layout = self.current_structure.layout
-            layout_y = 0
-            current_y = self.anchors[0][1]
-            current_x = self.anchors[0][0]
-            while layout_y < len(layout):
-                for square in reversed(layout[layout_y]):
-                    if square == 1:
-                        self.squares[current_y][current_x] = square
-                        self._print_square(current_x, current_y)
-                        current_y += 1
-                    elif isinstance(square, str):
-                        self.create_anchor(current_y, current_x, square, anchor_direction)
-                        self.squares[current_y][current_x] = square
-                        self._print_square(current_x, current_y)
-                        current_y += 1
-                    else:
-                        current_y += 1
-                layout_y += 1
-                current_x -= 1
-                current_y = self.anchors[0][1]
-            del self.anchors[0]
-            print("Anchors are now {}".format(self.anchors))
-
-    def build_alternate(self, structure, anchor):
-        print("Building from original anchor: {}".format(anchor))
-        anchor = self.offset_alternate(anchor)
+    def build(self, structure, anchor):
+        print("Building {0} from original anchor: {1}".format(structure.name, anchor))
+        anchor = structure.apply_offset(anchor)
         anchor_direction = anchor[2]
         layout = structure.layout
         if anchor_direction == "S":
@@ -321,7 +138,7 @@ class Grid(object):
                         self._print_square(current_y, current_x)
                         current_x += 1
                     elif isinstance(square, str):
-                        self.create_anchor_alternate(current_y, current_x, square, anchor_direction, structure)
+                        self.create_anchor(current_y, current_x, square, anchor_direction, structure)
                         self.squares[current_y][current_x] = square
                         self._print_square(current_y, current_x)
                         current_x += 1
@@ -343,7 +160,7 @@ class Grid(object):
                         self._print_square(current_y, current_x)
                         current_x += 1
                     elif isinstance(square, str):
-                        self.create_anchor_alternate(current_y, current_x, square, anchor_direction, structure)
+                        self.create_anchor(current_y, current_x, square, anchor_direction, structure)
                         self.squares[current_y][current_x] = square
                         self._print_square(current_y, current_x)
                         current_x += 1
@@ -354,8 +171,8 @@ class Grid(object):
                 current_x = anchor[1]
         elif anchor_direction == "E":
             layout_y = 0
-            current_y = anchor[1]
-            current_x = anchor[0]
+            current_y = anchor[0]
+            current_x = anchor[1]
             while layout_y < len(layout):
                 for square in layout[layout_y]:
                     if square == 1:
@@ -364,7 +181,7 @@ class Grid(object):
                         current_y += 1
                     elif isinstance(square, str):
                         # print(square)
-                        self.create_anchor_alternate(current_y, current_x, square, anchor_direction, structure)
+                        self.create_anchor(current_y, current_x, square, anchor_direction, structure)
                         self.squares[current_y][current_x] = square
                         self._print_square(current_y, current_x)
                         current_y += 1
@@ -372,11 +189,11 @@ class Grid(object):
                         current_y += 1
                 layout_y += 1
                 current_x += 1
-                current_y = anchor[1]
+                current_y = anchor[0]
         elif anchor_direction == "W":
             layout_y = 0
-            current_y = anchor[1]
-            current_x = anchor[0]
+            current_y = anchor[0]
+            current_x = anchor[1]
             while layout_y < len(layout):
                 for square in reversed(layout[layout_y]):
                     if square == 1:
@@ -384,7 +201,7 @@ class Grid(object):
                         self._print_square(current_y, current_x)
                         current_y += 1
                     elif isinstance(square, str):
-                        self.create_anchor_alternate(current_y, current_x, square, anchor_direction, structure)
+                        self.create_anchor(current_y, current_x, square, anchor_direction, structure)
                         self.squares[current_y][current_x] = square
                         self._print_square(current_y, current_x)
                         current_y += 1
@@ -392,9 +209,9 @@ class Grid(object):
                         current_y += 1
                 layout_y += 1
                 current_x -= 1
-                current_y = anchor[1]
+                current_y = anchor[0]
             del self.anchors[0]
-            print("Anchors are now {}".format(self.anchors))
+        print("Anchors are now {}".format(self.anchors))
 
     """
     Plan 1: Unrestrained Building 
@@ -427,19 +244,6 @@ class Grid(object):
         determine cluster size. Maybe it's not a bad idea to break up the map into sectors based on the initial 
         entrance structure. 
     """
-
-    def single_build_test(self):
-        self.current_structure = self.all_structures[1]
-        grid.build()
-        del grid.anchors[0]
-        # hallway = structures.ShortHallway(0)
-        # hallway.check_attributes()
-
-    def multiple_build_test(self):
-        for structure in self.all_structures:
-            print("Building {}".format(structure))
-            grid.build(structure)
-            del grid.anchors[0]
 
 
 def emptyGrid(intDim):
@@ -476,33 +280,19 @@ def fillGrid(intDim):
 
 
 if __name__ == '__main__':
-    grid = Grid(20, 20, [8, 8, "S"])
+    grid = Grid(30, 30, [1, 15, "S"])
     # grid.single_build_test()
-    grid.build_alternate(grid.all_structures[0], grid.anchors[0])
+    grid.build(grid.all_structures[0], grid.anchors[0])
     print(grid.anchors)
-    grid.build_alternate(grid.all_structures[1], grid.anchors[1])
-    # grid.build(grid.all_structures[1])
-    # print(grid.anchors)
-
-    # hallway = structures.ShortHallway(0)
-    # hallway.check_attributes()
-    # hallway.blueprint()
-    #
-    # potential_classes = [Duck(), Dog(), Frog()]
-    # pet = potential_classes[random.randint(0, 2)]
-    # pet.speak()
-    # grid = Grid(16, 16)
-    # print(grid.squares)
-
-
-    # def multi_build_test():
+    grid.build(grid.all_structures[1], grid.anchors[1])
+    grid.build(grid.all_structures[1], grid.anchors[2])
 
     myPen = turtle.Turtle()
     # myPen.tracer(0)
     myPen.speed(0)
     myPen.color("#000000")
 
-    boxSize = 5
+    boxSize = 10
     # Position myPen in top left area of the screen
     myPen.penup()
     # Below var was originally -100 I think.
