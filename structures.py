@@ -4,25 +4,6 @@ x = None
 
 class Structure(object):
 
-    # Psuedocode: STRUCTURES
-    """
-        args(self, layout, compass_axis[i.e. North-South, West-East)
-        attributes:
-        layout: a matrix that the subclass will return to the grid, which the grid
-        will use to build the structure.
-        area: the amount of space taken up by the matrix
-        volume: the total amount of movable squares used in the structure. This might be
-        used to lend weight to certain structures. Perhaps a grid sector needs at least one room of a
-        certain volume so it's not just constantly building halls?
-
-        returns a new set of anchors for the grid to operate on.
-
-        structure subclasses
-
-        80's are anchors points; 80 is a north to south ("S") anchors, 81 is an east to west anchor ("W"),
-        82 is a south to north anchor ("N"), 83 is a west to east anchor ("E")
-    """
-
     def __init__(self, name=None, layout=None, area=None,
                  volume=None, width=None, height=None, offset=0):
         self.name = name
@@ -30,6 +11,7 @@ class Structure(object):
         self.area = area
         self.width = width
         self.height = height
+        # This value is used to center the structure during building
         self.offset = offset
 
     def blueprint(self):
@@ -58,8 +40,30 @@ class Structure(object):
             print("Returning anchor: {}".format(anchor))
             return anchor
 
+    # This method must be used when rotating a structure westward.
+    # It swaps the position of the anchor with it's neighbor 1 square on the other side of the exit. Otherwise
+    # structures building from that anchor will be off.
+    def swap_anchors(self, anchors=[[]], swaps=[[]]):
+        i = 0
+        for anchor in anchors:
+            anchor_y = anchor[0]
+            anchor_x = anchor[1]
+            anchor_type = anchor[2]
+            swap = swaps[i]
+            swap_y = swap[0]
+            swap_x = swap[1]
+            print("Swapping anchor @ Y:{0} X: {1} --> Y:{2} X:{3}".format(anchor_y, anchor_x, swap_y, swap_x))
+            self.layout[swap_y][swap_x] = anchor_type
+            self.layout[anchor_y][anchor_x] = 1
+            i += 1
 
 
+class DeadEnd(Structure):
+    def __init__(self):
+        super().__init__(name="Dead End", layout=[
+            [1, 0, 0, 1],
+            [1, 1, 1, 1]
+        ], area=8, width=4, height=4)
 
 class ShortHallway(Structure):
 
@@ -90,6 +94,9 @@ class TeeHall(Structure):
             [1, 1, 1, 1, 1, 1]
         ], volume=9, area=24, width=6, height=7, offset=-1)
 
+    def swap_anchors(self):
+        super().swap_anchors(anchors=[[4, 0, "W"], [4, 5, "E"]], swaps=[[7, 0], [7, 5]])
+
 
 class ThreeHall(Structure):
     def __init__(self):
@@ -117,3 +124,16 @@ class CircleRoom7x6(Structure):
             [x, x, 1, 0, 0, 1, x, x],
             [x, x, x, 1, 1, x, x, x],
         ], volume=26, area=38, height=7, width=8, offset=-2)
+
+
+class JCircleRoom7x6(Structure):
+    def __init__(self):
+        super().__init__(name="Circle Room 7x6", layout=[
+            [x, 1, 0, 0, 1, x, x],
+            [1, 0, 0, 0, 0, 1, x],
+            [0, 0, 0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0, 1],
+            ["W", 0, 0, 0, 0, 1, x],
+            [x, 1, 0, 0, 1, x, x],
+            [x, x, 1, 1, x, x, x],
+        ], volume=26, area=38, height=7, width=8, offset=-1)

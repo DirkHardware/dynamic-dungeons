@@ -40,7 +40,7 @@ class Grid(object):
         # dirs to set our first anchors instead.
         self.current_structure = structures.TeeHall()
         self.all_structures = [structures.ShortHallway(), structures.TeeHall(),
-                               structures.ThreeHall(), structures.CircleRoom7x6()]
+                               structures.ThreeHall(), structures.DeadEnd, structures.CircleRoom7x6()]
         self.valid_structures = [structures.ShortHallway(), structures.TeeHall()]
         # The below values are just for test purposes, remember to set
         # them back to a blank list when you are done.
@@ -75,10 +75,6 @@ class Grid(object):
             elif square == "W":
                 self.anchors.append([y, x, square])
                 self._test_anchor(y, x, square)
-        # N's anchor creation merely duplicates the initial anchor, this must
-        # be addressed.
-        # I think I see what I did here. I merely changed the facing of the anchor
-        # without taking into account where it would be placed.
         if anchor_direction == "N":
             if square == "S":
                 self.anchors.append([y - structure.height, x, "N"])
@@ -100,29 +96,28 @@ class Grid(object):
                 self.anchors.append([y, x, "W"])
                 self._test_anchor(y, x, "W")
             elif square == "E":
-                self.anchors.append([y, x, "N"])
-                self._test_anchor(y, x, "N")
-            elif square == "W":
                 self.anchors.append([y, x, "S"])
                 self._test_anchor(y, x, "S")
+            elif square == "W":
+                self.anchors.append([y, x, "N"])
+                self._test_anchor(y, x, "N")
         if anchor_direction == "W":
             if square == "S":
-                # difference
-                v_difference = self._get_anchor_index(structure, anchor_direction)
                 self.anchors.append([y, x, "W"])
                 self._test_anchor(y, x, "W")
             elif square == "N":
                 self.anchors.append([y, x, "E"])
                 self._test_anchor(y, x, "E")
             elif square == "E":
-                self.anchors.append([y, x, "S"])
-                self._test_anchor(y, x, "S")
-            elif square == "W":
                 self.anchors.append([y, x, "N"])
                 self._test_anchor(y, x, "N")
+            elif square == "W":
+                self.anchors.append([y, x, "S"])
+                self._test_anchor(y, x, "S")
 
     def build(self, structure, anchor):
         print("Building {0} from original anchor: {1}".format(structure.name, anchor))
+        original_anchor = anchor
         anchor = structure.apply_offset(anchor)
         anchor_direction = anchor[2]
         layout = structure.layout
@@ -191,6 +186,7 @@ class Grid(object):
                 current_x += 1
                 current_y = anchor[0]
         elif anchor_direction == "W":
+            structure.swap_anchors()
             layout_y = 0
             current_y = anchor[0]
             current_x = anchor[1]
@@ -210,7 +206,8 @@ class Grid(object):
                 layout_y += 1
                 current_x -= 1
                 current_y = anchor[0]
-            del self.anchors[0]
+        i = self.anchors.index(original_anchor)
+        del self.anchors[i]
         print("Anchors are now {}".format(self.anchors))
 
     """
@@ -280,13 +277,19 @@ def fillGrid(intDim):
 
 
 if __name__ == '__main__':
-    grid = Grid(30, 30, [1, 15, "S"])
+    grid = Grid(30, 30, [0, 15, "S"])
     # grid.single_build_test()
     grid.build(grid.all_structures[0], grid.anchors[0])
-    print(grid.anchors)
-    grid.build(grid.all_structures[1], grid.anchors[1])
-    grid.build(grid.all_structures[1], grid.anchors[2])
-    grid.build(grid.all_structures[-1], grid.anchors[-1])
+    grid.build(structures.TeeHall(), grid.anchors[0])
+    grid.build(structures.TeeHall(), grid.anchors[0])
+    grid.build(structures.CircleRoom7x6(), grid.anchors[0])
+    grid.build(structures.CircleRoom7x6(), grid.anchors[1])
+    grid.build(structures.CircleRoom7x6(), grid.anchors[0])
+    # grid.build(structures.CircleRoom7x6(), grid.anchors[1])
+    # grid.build(structures.CircleRoom7x6(), grid.anchors[1])
+
+    # grid.build(structures.JCircleRoom7x6(), grid.anchors[-1])
+    # grid.build(structures.DeadEnd(), grid.anchors[-2])
 
 
     myPen = turtle.Turtle()
