@@ -65,6 +65,7 @@ class DeadEnd(Structure):
             [1, 1, 1, 1]
         ], area=8, width=4, height=4)
 
+
 class ShortHallway(Structure):
 
     # Okay that problem you had earlier where you were getting too many
@@ -79,6 +80,19 @@ class ShortHallway(Structure):
             [1, 0, 0, 1],
             ["S", 0, 0, 1],
         ], volume=15, area=15, width=4, height=5)
+
+
+class MedHallway(Structure):
+    def __init__(self):
+        super().__init__(name="Medium Hallway", layout=[
+            [1, 0, 0, 1],
+            [1, 0, 0, 1],
+            [1, 0, 0, 1],
+            [1, 0, 0, 1],
+            [1, 0, 0, 1],
+            [1, 0, 0, 1],
+            ["S", 0, 0, 1],
+        ], height=7)
 
 
 class TeeHall(Structure):

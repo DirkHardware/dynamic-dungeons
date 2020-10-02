@@ -81,7 +81,7 @@ class Grid(object):
                 self._test_anchor(y, x, square)
             elif square == "N":
                 self.anchors.append([y - structure.height, x, "S"])
-                self._test_anchor(y - structure.height, x, "S")
+                self._test_anchor(y - structure.height, x, square)
             elif square == "E":
                 self.anchors.append([y, x, square])
                 self._test_anchor(y, x, square)
@@ -277,19 +277,14 @@ def fillGrid(intDim):
 
 
 if __name__ == '__main__':
-    grid = Grid(30, 30, [0, 15, "S"])
-    # grid.single_build_test()
-    grid.build(grid.all_structures[0], grid.anchors[0])
-    grid.build(structures.TeeHall(), grid.anchors[0])
-    grid.build(structures.TeeHall(), grid.anchors[0])
-    grid.build(structures.CircleRoom7x6(), grid.anchors[0])
-    grid.build(structures.CircleRoom7x6(), grid.anchors[1])
-    grid.build(structures.CircleRoom7x6(), grid.anchors[0])
-    # grid.build(structures.CircleRoom7x6(), grid.anchors[1])
-    # grid.build(structures.CircleRoom7x6(), grid.anchors[1])
+    # Something is deeply wrong with northward and it must be addressed
+    grid = Grid(30, 30, [5, 15, "N"])
+    grid.build(structures.JCircleRoom7x6(), grid.anchors[0])
+    # grid.build(structures.TeeHall(), grid.anchors[0])
+    # grid.build(structures.TeeHall(), grid.anchors[0])
+    # grid.build(structures.CircleRoom7x6(), grid.anchors[0])
+    # grid.build(structures.CircleRoom7x6(), grid.anchors[0])
 
-    # grid.build(structures.JCircleRoom7x6(), grid.anchors[-1])
-    # grid.build(structures.DeadEnd(), grid.anchors[-2])
 
 
     myPen = turtle.Turtle()
