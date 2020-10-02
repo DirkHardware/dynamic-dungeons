@@ -276,12 +276,14 @@ if __name__ == '__main__':
     # The problem with northward rendering was that the eastward rotation portion of the rotate method was handling
     # the placement of the anchor, not the northward rotation portion.
     # Northward placement still needs serious overhaul
+    # FYI the issue with testing rooms on either side of a north facing TeeHall is coming from the fact that the
+    # CircleRoom structure has no anchors. Fix that later.
     grid = Grid(30, 30, [10, 15, "N"])
     # grid.build(structures.JCircleRoom7x6(), grid.anchors[0])
     # grid.build(structures.TeeHall(), grid.anchors[0])
     grid.build(structures.TeeHall(), grid.anchors[0])
-    # grid.build(structures.CircleRoom7x6(), grid.anchors[0])
-    grid.build(structures.CircleRoom7x6(), grid.anchors[1])
+    grid.build(structures.CircleRoom7x6(), grid.anchors[0])
+    grid.build(structures.CircleRoom7x6(), grid.anchors[0])
     # grid.build(structures.CircleRoom7x6(), grid.anchors[0])
 
 
