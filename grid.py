@@ -3,11 +3,6 @@ import random
 import structures
 from exceptions import SpillOverError
 
-"""Perhaps if we want to partition Grid into sectors to make life easier,
-we can make the sectors a subclass of grid, so that way they can keep track
-of their own anchors and available space. """
-
-
 
 class Grid(object):
 
@@ -70,10 +65,10 @@ class Grid(object):
                 self.anchors.append([y, x, square])
                 self._test_anchor(y, x, square)
             elif square == "E":
-                self.anchors.append([y, x, square])
+                self.anchors.append([y, x + 1, square])
                 self._test_anchor(y, x, square)
             elif square == "W":
-                self.anchors.append([y, x, square])
+                self.anchors.append([y, x - 1, square])
                 self._test_anchor(y, x, square)
         if anchor_direction == "N":
             if square == "S":
@@ -96,10 +91,10 @@ class Grid(object):
                 self.anchors.append([y, x, "W"])
                 self._test_anchor(y, x, "W")
             elif square == "E":
-                self.anchors.append([y, x, "S"])
+                self.anchors.append([y + 1, x, "S"])
                 self._test_anchor(y, x, "S")
             elif square == "W":
-                self.anchors.append([y, x, "N"])
+                self.anchors.append([y - structure.width - 1, x, "N"])
                 self._test_anchor(y, x, "N")
         if anchor_direction == "W":
             if square == "S":
@@ -109,10 +104,10 @@ class Grid(object):
                 self.anchors.append([y, x, "E"])
                 self._test_anchor(y, x, "E")
             elif square == "E":
-                self.anchors.append([y, x, "N"])
+                self.anchors.append([y - structure.width - 1, x, "N"])
                 self._test_anchor(y, x, "N")
             elif square == "W":
-                self.anchors.append([y, x, "S"])
+                self.anchors.append([y + 1, x, "S"])
                 self._test_anchor(y, x, "S")
 
     def build(self, structure, anchor):
@@ -278,11 +273,15 @@ def fillGrid(intDim):
 
 if __name__ == '__main__':
     # Something is deeply wrong with northward and it must be addressed
-    grid = Grid(30, 30, [5, 15, "N"])
-    grid.build(structures.JCircleRoom7x6(), grid.anchors[0])
+    # The problem with northward rendering was that the eastward rotation portion of the rotate method was handling
+    # the placement of the anchor, not the northward rotation portion.
+    # Northward placement still needs serious overhaul
+    grid = Grid(30, 30, [10, 15, "N"])
+    # grid.build(structures.JCircleRoom7x6(), grid.anchors[0])
     # grid.build(structures.TeeHall(), grid.anchors[0])
-    # grid.build(structures.TeeHall(), grid.anchors[0])
+    grid.build(structures.TeeHall(), grid.anchors[0])
     # grid.build(structures.CircleRoom7x6(), grid.anchors[0])
+    grid.build(structures.CircleRoom7x6(), grid.anchors[1])
     # grid.build(structures.CircleRoom7x6(), grid.anchors[0])
 
 
